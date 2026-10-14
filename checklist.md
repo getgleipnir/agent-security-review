@@ -2,7 +2,7 @@
 
 # AI Agent Security Review Checklist
 
-Version 0.1.0, updated 2026-10-14. 33 items in 10 groups.
+Version 0.1.1, updated 2026-10-14. 33 items in 10 groups.
 
 How to read each item:
 

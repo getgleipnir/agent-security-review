@@ -51,6 +51,8 @@
       "description": "Machine-checkable evidence capabilities. Tools (for example an SDK) can report which capabilities a setup provides and derive coverage per item.",
       "enum": [
         "action_record",
+        "endpoint_record",
+        "source_record",
         "identity_binding",
         "scope_record",
         "model_version",
