@@ -82,7 +82,7 @@ What the agent can do in the buyer's systems, under which identity, and how that
 **References**
 
 - FINOS AIR [AIR-PREV-023](https://air-governance-framework.finos.org/mitigations/mi-23_agentic-system-credential-protection-framework.html): Agentic credential protection, signed agent API requests *(verified)*
-- FINOS AIR [AIR-DET-021](https://air-governance-framework.finos.org/mitigations/mi-21_agent-decision-audit-and-explainability.html): Record who or what initiated each agent decision *(verified)*
+- FINOS AIR [AIR-DET-021](https://air-governance-framework.finos.org/mitigations/mi-21_agent-decision-audit-and-explainability.html): Log decision initiation, including the triggering event and context *(verified)*
 - FINOS AIR [AIR-SEC-029](https://air-governance-framework.finos.org/risks/ri-29_agent-mediated-credential-discovery-and-harvesting.html): Risk: agent-mediated credential harvesting *(verified)*
 - CSA AICM IAM-13: Uniquely identifiable users, including non-human *(title only)*
 - CSA AICM IAM-19: Agent access restriction *(title only)*
@@ -149,7 +149,7 @@ What is recorded for each agent action, and whether one action can be produced e
 - EU AI Act [Art. 12(1)-(2)](https://artificialintelligenceact.eu/article/12/): Automatic event logging over the lifetime that enables traceability (high-risk) *(verified)*
 - ISO 42001 A.6.2.8: AI system recording of event logs *(secondary source)*
 - NYDFS 500 [500.6(a)(1)](https://www.law.cornell.edu/regulations/new-york/23-NYCRR-500.6): Systems able to reconstruct material financial transactions *(verified)*
-- NAIC AI Bulletin Sec. 3, 3.3(b)-(c): Model documentation, traceability and auditability *(secondary source)*
+- NAIC AI Bulletin Sec. 3, 3.3(b)-(c): Model documentation, traceability and auditability *(verified)*
 - NYDFS CL7 ¶19: Be able to explain at all times how the AIS operates *(verified)*
 
 ### ACT-02
@@ -173,7 +173,7 @@ What is recorded for each agent action, and whether one action can be produced e
 - FINOS AIR [AIR-OP-005](https://air-governance-framework.finos.org/risks/ri-5_foundation-model-versioning.html): Risk: foundation model versioning *(verified)*
 - NIST AI 600-1 GV-1.6-003: Inventory records underlying models and versions *(verified)*
 - NIST AI RMF GOVERN 1.6 / 1.7: AI inventory and decommissioning *(verified)*
-- NAIC AI Bulletin Sec. 3, 3.3(a): Model inventory *(secondary source)*
+- NAIC AI Bulletin Sec. 3, 3.3(a): Model inventory *(verified)*
 - NYDFS CL7 ¶29: Inventory including retired AIS, with change tracking *(verified)*
 - CSA AICM MDS-03 to MDS-05: Model documentation *(title only)*
 - CSA AICM MDS-09: Model signing and ownership verification *(title only)*
@@ -241,7 +241,7 @@ What is recorded for each agent action, and whether one action can be produced e
 
 **References**
 
-- NAIC AI Bulletin Sec. 3, 3.2: Data practices incl. lineage and integrity *(secondary source)*
+- NAIC AI Bulletin Sec. 3, 3.2: Data practices incl. lineage and integrity *(verified)*
 - NYDFS CL7 ¶29: Documentation of inputs and their sources *(verified)*
 - ISO 42001 A.7.5: Data provenance *(secondary source)*
 - CSA AICM DSP-20: Data provenance and transparency *(title only)*
@@ -321,7 +321,7 @@ Whether what the agent reports matches what actually happened in the system of r
 - FINOS AIR [AIR-DET-021](https://air-governance-framework.finos.org/mitigations/mi-21_agent-decision-audit-and-explainability.html): Log actions taken and their downstream effects *(verified)*
 - NYDFS 500 [500.6(a)(1)](https://www.law.cornell.edu/regulations/new-york/23-NYCRR-500.6): Reconstruct material financial transactions *(verified)*
 - EU AI Act [Art. 12(2)](https://artificialintelligenceact.eu/article/12/): Logs enable traceability and deployer monitoring *(verified)*
-- NAIC AI Bulletin Sec. 3, 3.4: Validate and retest outputs after implementation *(secondary source)*
+- NAIC AI Bulletin Sec. 3, 3.4: Validate and retest outputs after implementation *(verified)*
 - NIST AI RMF MEASURE 2.4: Monitor behaviour in production *(verified)*
 
 ### OUT-02
@@ -382,7 +382,7 @@ Whether records can be changed after the fact without anyone noticing, and who c
 - CSA AICM IAM-12: Safeguard logs integrity *(secondary source)*
 - CSA AICM LOG-02: Audit logs protection *(secondary source)*
 - CSA AICM LOG-06: Clock synchronization *(title only)*
-- NIST AI 600-1 MS-2.8-003: Tamper-proof history of content with version control *(verified)*
+- NIST AI 600-1 MS-2.8-003: Tamper-proof history of generated content (content provenance) with version control *(verified)*
 - NYDFS 500 [500.6(a)](https://www.law.cornell.edu/regulations/new-york/23-NYCRR-500.6): Securely maintain audit trail systems (no cryptographic requirement) *(verified)*
 
 ### TMP-02
@@ -461,7 +461,7 @@ Detecting, reporting, stopping and reconstructing what went wrong.
 - NYDFS 500 [500.16(a)(1)](https://www.law.cornell.edu/regulations/new-york/23-NYCRR-500.16): Incident response plan incl. documentation and root cause *(verified)*
 - DORA [Art. 17(1)-(3)](https://www.digital-operational-resilience-act.com/Article_17.html): Incident detection, logging and root-cause analysis *(verified)*
 - DORA [Art. 30(2)(f)](https://www.digital-operational-resilience-act.com/Article_30.html): Provider assists with ICT incidents *(verified)*
-- EU AI Act [Art. 73](https://artificialintelligenceact.eu/article/73/): Serious incident reporting; do not alter the system before informing authorities *(verified)*
+- EU AI Act [Art. 73](https://artificialintelligenceact.eu/article/73/): Serious incident reporting; provider must not alter the system before informing authorities *(verified)*
 - CSA AICM SEF-09: Incident response *(title only)*
 - CSA AICM LOG-05 / LOG-06: Audit log monitoring and clock synchronization *(title only)*
 - NIST AI RMF MANAGE 4.3: Track and recover from incidents and errors *(verified)*
@@ -470,7 +470,7 @@ Detecting, reporting, stopping and reconstructing what went wrong.
 
 > How do you detect and report model failures, data leakage or harmful outputs, and on what timeline will we hear about them?
 
-**Why they ask.** The buyer has its own notification clocks (72 hours under NYDFS 500, hours under DORA). Vendor timelines must fit inside them.
+**Why they ask.** The buyer has its own notification clocks (72 hours under NYDFS 500, 4 hours from classification and at most 24 hours from awareness under DORA). Vendor timelines must fit inside them.
 
 **Evidence that satisfies it**
 
@@ -598,7 +598,7 @@ How long records are kept, by whom, and how the buyer gets them.
 - DORA [RTS 2024/1773 Art. 3](https://advisera.com/cdr-2024-1773/governance-arrangements/): Effective data access for auditors and authorities *(secondary source)*
 - EU AI Act [Art. 13(3)(f)](https://artificialintelligenceact.eu/article/13/): Log collection mechanisms described for deployers *(verified)*
 - ISO 42001 A.8.5: Information for interested parties *(secondary source)*
-- NAIC AI Bulletin Sec. 4, 1.1-1.3: Documents regulators may request *(secondary source)*
+- NAIC AI Bulletin Sec. 4, 1.1-1.3: Documents regulators may request *(verified)*
 
 ### RET-04
 
@@ -622,7 +622,7 @@ How long records are kept, by whom, and how the buyer gets them.
 - NYDFS 500 [500.6(b)](https://www.law.cornell.edu/regulations/new-york/23-NYCRR-500.6): Five-year retention for covered entities' audit trails *(verified)*
 - EU AI Act [Art. 19(2); Art. 26(6)](https://artificialintelligenceact.eu/article/26/): Financial institutions keep logs under financial-services documentation rules *(verified)*
 - DORA [Art. 28(8); Art. 30(2)(d)](https://www.digital-operational-resilience-act.com/Article_28.html): Exit plans and return of data *(verified)*
-- NAIC AI Bulletin Sec. 3, 3.6: Data and record retention in the AIS program *(secondary source)*
+- NAIC AI Bulletin Sec. 3, 3.6: Data and record retention in the AIS program *(verified)*
 
 ## CHG · Model & prompt changes
 
@@ -647,7 +647,7 @@ Which models run, how changes are controlled, and how behaviour is monitored ove
 **References**
 
 - FS-ISAC GenAI Level 1: Identify the foundation model *(verified)*
-- NIST AI 600-1 GV-1.6-003; GV-6.2-007: Inventory of models and versions; contracts request notice of changes *(verified)*
+- NIST AI 600-1 GV-1.6-003; GV-6.2-007: Inventory of models and versions; contracts address liability for changes over time *(verified)*
 - FINOS AIR [AIR-PREV-007](https://air-governance-framework.finos.org/mitigations/mi-7_legal-and-contractual-frameworks-for-ai-systems.html): Contracts cover model versioning and change notification *(verified)*
 - FINOS AIR [AIR-PREV-010](https://air-governance-framework.finos.org/mitigations/mi-10_ai-model-version-pinning.html): Advance notice of new versions and deprecations *(verified)*
 - CSA AICM CCC-05; STA-08; STA-16: Change agreements, supply chain inventory, service BOM *(title only)*
@@ -681,7 +681,7 @@ Which models run, how changes are controlled, and how behaviour is monitored ove
 - NIST AI RMF MANAGE 4.1: Post-deployment monitoring incl. change management *(verified)*
 - FINOS AIR [AIR-PREV-005](https://air-governance-framework.finos.org/mitigations/mi-5_system-acceptance-testing.html): System acceptance testing *(verified)*
 - FINOS AIR [AIR-PREV-025](https://air-governance-framework.finos.org/mitigations/mi-25_skill-plugin-integrity-and-governance.html): Skill and plugin integrity *(verified)*
-- NIST AI 600-1 MS-2.8-003: Version control across the lifecycle *(verified)*
+- NIST AI 600-1 MS-2.8-003: Version control across the lifecycle (content provenance) *(verified)*
 
 ### CHG-03
 
@@ -702,7 +702,7 @@ Which models run, how changes are controlled, and how behaviour is monitored ove
 **References**
 
 - FS-ISAC GenAI Level 2: Model validation *(verified)*
-- NAIC AI Bulletin Sec. 3, 3.3(c); 3.4: Drift and auditability; validation and retesting *(secondary source)*
+- NAIC AI Bulletin Sec. 3, 3.3(c); 3.4: Drift and auditability; validation and retesting *(verified)*
 - NYDFS CL7 ¶15-¶17; ¶32: Testing and independent review *(verified)*
 - NIST AI RMF MEASURE 2.3 / 2.5 / 2.11: Performance, validity and fairness *(verified)*
 - CSA AICM MDS-10; GRC-11; A&A-02: Continuous monitoring, bias assessment, independent assessments *(title only)*
@@ -813,7 +813,7 @@ Evidence that the oversight model the buyer chose was actually followed.
 
 **References**
 
-- NAIC AI Bulletin Sec. 3 (risk factors): Extent of human involvement in final decisions *(secondary source)*
+- NAIC AI Bulletin Sec. 3 (risk factors): Extent of human involvement in final decisions *(verified)*
 - NYDFS AI Letter Training: When human review must be part of verification *(verified)*
 - NIST AI RMF GOVERN 3.2; MAP 3.5: Human-AI roles and oversight processes defined *(verified)*
 - EU AI Act [Art. 14](https://artificialintelligenceact.eu/article/14/): Human oversight measures for high-risk systems *(verified)*
@@ -891,7 +891,7 @@ Model, voice and tool providers behind the agent, and the buyer's audit and regu
 
 **References**
 
-- NAIC AI Bulletin Sec. 3, 4.2(a); 4.3: Audit rights or audit reports; exercise of audit rights *(secondary source)*
+- NAIC AI Bulletin Sec. 3, 4.2(a); 4.3: Audit rights or audit reports; exercise of audit rights *(verified)*
 - NYDFS CL7 ¶37: Audit rights or reports in vendor contracts *(verified)*
 - DORA [Art. 28(6); Art. 30(3)(e)](https://www.digital-operational-resilience-act.com/Article_30.html): Audits; access, inspection and audit rights *(verified)*
 - FS-ISAC GenAI Level 3: Audit validation *(verified)*
@@ -915,7 +915,7 @@ Model, voice and tool providers behind the agent, and the buyer's audit and regu
 
 **References**
 
-- NAIC AI Bulletin Sec. 3, 4.2(b); Sec. 4: Cooperation with regulatory inquiries; documents regulators may request *(secondary source)*
+- NAIC AI Bulletin Sec. 3, 4.2(b); Sec. 4: Cooperation with regulatory inquiries; documents regulators may request *(verified)*
 - NYDFS CL7 ¶9; ¶37: DFS exam authority; cooperation clause *(verified)*
 - DORA [Art. 30(2)(g)](https://www.digital-operational-resilience-act.com/Article_30.html): Full cooperation with competent authorities *(verified)*
 - EU AI Act [Art. 18](https://artificialintelligenceact.eu/article/18/): Provider documentation kept for authorities *(verified)*

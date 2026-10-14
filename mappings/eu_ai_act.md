@@ -24,6 +24,6 @@
 | [Art. 26(6)](https://artificialintelligenceact.eu/article/26/) | Deployer keeps logs at least six months; financial institutions under financial law (high-risk) | [RET-02](../checklist.md#ret-02) | verified |
 | [Art. 50(1)](https://artificialintelligenceact.eu/article/50/) | Inform people they are interacting with an AI system | [ACT-07](../checklist.md#act-07) | verified |
 | [Art. 72](https://artificialintelligenceact.eu/article/72/) | Post-market monitoring by the provider (high-risk) | [CHG-04](../checklist.md#chg-04) | verified |
-| [Art. 73](https://artificialintelligenceact.eu/article/73/) | Serious incident reporting; do not alter the system before informing authorities | [INC-01](../checklist.md#inc-01) | verified |
+| [Art. 73](https://artificialintelligenceact.eu/article/73/) | Serious incident reporting; provider must not alter the system before informing authorities | [INC-01](../checklist.md#inc-01) | verified |
 | [Art. 73(2)-(6)](https://artificialintelligenceact.eu/article/73/) | Serious incident reporting deadlines (high-risk) | [INC-02](../checklist.md#inc-02) | verified |
 | [Art. 86(1)](https://artificialintelligenceact.eu/article/86/) | Right to explanation for affected persons (Annex III) | [ACT-06](../checklist.md#act-06) | verified |

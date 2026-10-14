@@ -44,13 +44,13 @@ If you have good answers to these seven, the rest of the review usually goes fas
 Each item's references were checked on 2026-10-14 against the source and marked:
 
 - **verified**: checked against the primary text.
-- **secondary source**: the primary is gated or unreadable (for example ISO 42001, parts of NAIC and CSA AICM), so it was checked against a reliable secondary source.
+- **secondary source**: the primary is gated or unreadable (for example ISO 42001 and CSA AICM), so it was checked against a reliable secondary source.
 - **title only**: only the control title was publicly available (common for CSA AICM's AI-specific controls).
 
 Paraphrases are ours and short. Read the source before relying on one. Some points worth knowing:
 
 - Only the **FINOS AI Governance Framework** (AIR-DET-021) explicitly asks for audit records that are tamper-evident *and* verifiable by the deployer, auditor or regulator without privileged access to the provider. DORA's RTS (2024/1774, Art. 12) requires logs to be protected against tampering and deletion; NYDFS Part 500, NAIC, the EU AI Act and ISO 42001 require records to exist, be retained and support reconstruction, without naming a mechanism.
-- EU AI Act high-risk obligations for Annex III use cases, including credit scoring and life and health insurance pricing, apply from **2 December 2027** after the Digital Omnibus on AI (Regulation (EU) 2026/1744).
+- EU AI Act high-risk obligations for Annex III use cases, including credit scoring and life and health insurance pricing, apply from **2 December 2027** after the Digital Omnibus on AI (Regulation (EU) 2026/1744, published 24 July 2026, in force 27 July 2026).
 - The FS-ISAC question workbook, SIG question text and the AI-CAIQ question text are licensed or login-gated, so this checklist maps to their published categories and control IDs, not to their exact question wording.
 
 The checklist does not give legal advice and does not certify compliance with any framework.

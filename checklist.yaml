@@ -184,7 +184,7 @@ items:
     capabilities: [identity_binding, action_record]
     references:
       - {fw: finos, ref: AIR-PREV-023, note: "Agentic credential protection, signed agent API requests", confidence: verified, url: "https://air-governance-framework.finos.org/mitigations/mi-23_agentic-system-credential-protection-framework.html"}
-      - {fw: finos, ref: AIR-DET-021, note: "Record who or what initiated each agent decision", confidence: verified, url: "https://air-governance-framework.finos.org/mitigations/mi-21_agent-decision-audit-and-explainability.html"}
+      - {fw: finos, ref: AIR-DET-021, note: "Log decision initiation, including the triggering event and context", confidence: verified, url: "https://air-governance-framework.finos.org/mitigations/mi-21_agent-decision-audit-and-explainability.html"}
       - {fw: finos, ref: AIR-SEC-029, note: "Risk: agent-mediated credential harvesting", confidence: verified, url: "https://air-governance-framework.finos.org/risks/ri-29_agent-mediated-credential-discovery-and-harvesting.html"}
       - {fw: aicm, ref: IAM-13, note: "Uniquely identifiable users, including non-human", confidence: title-only}
       - {fw: aicm, ref: IAM-19, note: "Agent access restriction", confidence: title-only}
@@ -240,7 +240,7 @@ items:
       - {fw: eu_ai_act, ref: "Art. 12(1)-(2)", note: "Automatic event logging over the lifetime that enables traceability (high-risk)", confidence: verified, url: "https://artificialintelligenceact.eu/article/12/"}
       - {fw: iso42001, ref: A.6.2.8, note: "AI system recording of event logs", confidence: secondary}
       - {fw: nydfs500, ref: "500.6(a)(1)", note: "Systems able to reconstruct material financial transactions", confidence: verified, url: "https://www.law.cornell.edu/regulations/new-york/23-NYCRR-500.6"}
-      - {fw: naic, ref: "Sec. 3, 3.3(b)-(c)", note: "Model documentation, traceability and auditability", confidence: secondary}
+      - {fw: naic, ref: "Sec. 3, 3.3(b)-(c)", note: "Model documentation, traceability and auditability", confidence: verified}
       - {fw: nydfs_cl7, ref: "¶19", note: "Be able to explain at all times how the AIS operates", confidence: verified}
 
   - id: ACT-02
@@ -260,7 +260,7 @@ items:
       - {fw: finos, ref: AIR-OP-005, note: "Risk: foundation model versioning", confidence: verified, url: "https://air-governance-framework.finos.org/risks/ri-5_foundation-model-versioning.html"}
       - {fw: nist_600_1, ref: GV-1.6-003, note: "Inventory records underlying models and versions", confidence: verified}
       - {fw: nist_rmf, ref: GOVERN 1.6 / 1.7, note: "AI inventory and decommissioning", confidence: verified}
-      - {fw: naic, ref: "Sec. 3, 3.3(a)", note: "Model inventory", confidence: secondary}
+      - {fw: naic, ref: "Sec. 3, 3.3(a)", note: "Model inventory", confidence: verified}
       - {fw: nydfs_cl7, ref: "¶29", note: "Inventory including retired AIS, with change tracking", confidence: verified}
       - {fw: aicm, ref: MDS-03 to MDS-05, note: "Model documentation", confidence: title-only}
       - {fw: aicm, ref: MDS-09, note: "Model signing and ownership verification", confidence: title-only}
@@ -316,7 +316,7 @@ items:
     often_unevidenced: false
     capabilities: []
     references:
-      - {fw: naic, ref: "Sec. 3, 3.2", note: "Data practices incl. lineage and integrity", confidence: secondary}
+      - {fw: naic, ref: "Sec. 3, 3.2", note: "Data practices incl. lineage and integrity", confidence: verified}
       - {fw: nydfs_cl7, ref: "¶29", note: "Documentation of inputs and their sources", confidence: verified}
       - {fw: iso42001, ref: A.7.5, note: "Data provenance", confidence: secondary}
       - {fw: aicm, ref: DSP-20, note: "Data provenance and transparency", confidence: title-only}
@@ -379,7 +379,7 @@ items:
       - {fw: finos, ref: AIR-DET-021, note: "Log actions taken and their downstream effects", confidence: verified, url: "https://air-governance-framework.finos.org/mitigations/mi-21_agent-decision-audit-and-explainability.html"}
       - {fw: nydfs500, ref: "500.6(a)(1)", note: "Reconstruct material financial transactions", confidence: verified, url: "https://www.law.cornell.edu/regulations/new-york/23-NYCRR-500.6"}
       - {fw: eu_ai_act, ref: "Art. 12(2)", note: "Logs enable traceability and deployer monitoring", confidence: verified, url: "https://artificialintelligenceact.eu/article/12/"}
-      - {fw: naic, ref: "Sec. 3, 3.4", note: "Validate and retest outputs after implementation", confidence: secondary}
+      - {fw: naic, ref: "Sec. 3, 3.4", note: "Validate and retest outputs after implementation", confidence: verified}
       - {fw: nist_rmf, ref: MEASURE 2.4, note: "Monitor behaviour in production", confidence: verified}
 
   - id: OUT-02
@@ -428,7 +428,7 @@ items:
       - {fw: aicm, ref: IAM-12, note: "Safeguard logs integrity", confidence: secondary}
       - {fw: aicm, ref: LOG-02, note: "Audit logs protection", confidence: secondary}
       - {fw: aicm, ref: LOG-06, note: "Clock synchronization", confidence: title-only}
-      - {fw: nist_600_1, ref: MS-2.8-003, note: "Tamper-proof history of content with version control", confidence: verified}
+      - {fw: nist_600_1, ref: MS-2.8-003, note: "Tamper-proof history of generated content (content provenance) with version control", confidence: verified}
       - {fw: nydfs500, ref: "500.6(a)", note: "Securely maintain audit trail systems (no cryptographic requirement)", confidence: verified, url: "https://www.law.cornell.edu/regulations/new-york/23-NYCRR-500.6"}
 
   - id: TMP-02
@@ -491,7 +491,7 @@ items:
       - {fw: nydfs500, ref: "500.16(a)(1)", note: "Incident response plan incl. documentation and root cause", confidence: verified, url: "https://www.law.cornell.edu/regulations/new-york/23-NYCRR-500.16"}
       - {fw: dora, ref: "Art. 17(1)-(3)", note: "Incident detection, logging and root-cause analysis", confidence: verified, url: "https://www.digital-operational-resilience-act.com/Article_17.html"}
       - {fw: dora, ref: "Art. 30(2)(f)", note: "Provider assists with ICT incidents", confidence: verified, url: "https://www.digital-operational-resilience-act.com/Article_30.html"}
-      - {fw: eu_ai_act, ref: "Art. 73", note: "Serious incident reporting; do not alter the system before informing authorities", confidence: verified, url: "https://artificialintelligenceact.eu/article/73/"}
+      - {fw: eu_ai_act, ref: "Art. 73", note: "Serious incident reporting; provider must not alter the system before informing authorities", confidence: verified, url: "https://artificialintelligenceact.eu/article/73/"}
       - {fw: aicm, ref: SEF-09, note: "Incident response", confidence: title-only}
       - {fw: aicm, ref: LOG-05 / LOG-06, note: "Audit log monitoring and clock synchronization", confidence: title-only}
       - {fw: nist_rmf, ref: MANAGE 4.3, note: "Track and recover from incidents and errors", confidence: verified}
@@ -500,7 +500,7 @@ items:
     group: INC
     origin: buyer-question
     question: How do you detect and report model failures, data leakage or harmful outputs, and on what timeline will we hear about them?
-    why: The buyer has its own notification clocks (72 hours under NYDFS 500, hours under DORA). Vendor timelines must fit inside them.
+    why: The buyer has its own notification clocks (72 hours under NYDFS 500, 4 hours from classification and at most 24 hours from awareness under DORA). Vendor timelines must fit inside them.
     evidence:
       - Contractual notification timeline that fits the buyer's obligations.
       - Detection sources (monitoring, alerts, user reports) and owners.
@@ -604,7 +604,7 @@ items:
       - {fw: dora, ref: "RTS 2024/1773 Art. 3", note: "Effective data access for auditors and authorities", confidence: secondary, url: "https://advisera.com/cdr-2024-1773/governance-arrangements/"}
       - {fw: eu_ai_act, ref: "Art. 13(3)(f)", note: "Log collection mechanisms described for deployers", confidence: verified, url: "https://artificialintelligenceact.eu/article/13/"}
       - {fw: iso42001, ref: A.8.5, note: "Information for interested parties", confidence: secondary}
-      - {fw: naic, ref: "Sec. 4, 1.1-1.3", note: "Documents regulators may request", confidence: secondary}
+      - {fw: naic, ref: "Sec. 4, 1.1-1.3", note: "Documents regulators may request", confidence: verified}
 
   - id: RET-04
     group: RET
@@ -623,7 +623,7 @@ items:
       - {fw: nydfs500, ref: "500.6(b)", note: "Five-year retention for covered entities' audit trails", confidence: verified, url: "https://www.law.cornell.edu/regulations/new-york/23-NYCRR-500.6"}
       - {fw: eu_ai_act, ref: "Art. 19(2); Art. 26(6)", note: "Financial institutions keep logs under financial-services documentation rules", confidence: verified, url: "https://artificialintelligenceact.eu/article/26/"}
       - {fw: dora, ref: "Art. 28(8); Art. 30(2)(d)", note: "Exit plans and return of data", confidence: verified, url: "https://www.digital-operational-resilience-act.com/Article_28.html"}
-      - {fw: naic, ref: "Sec. 3, 3.6", note: "Data and record retention in the AIS program", confidence: secondary}
+      - {fw: naic, ref: "Sec. 3, 3.6", note: "Data and record retention in the AIS program", confidence: verified}
 
   # ---------------------------------------------------------------- CHG
   - id: CHG-01
@@ -641,7 +641,7 @@ items:
     capabilities: [model_version]
     references:
       - {fw: fsisac, ref: Level 1, note: "Identify the foundation model", confidence: verified}
-      - {fw: nist_600_1, ref: GV-1.6-003; GV-6.2-007, note: "Inventory of models and versions; contracts request notice of changes", confidence: verified}
+      - {fw: nist_600_1, ref: GV-1.6-003; GV-6.2-007, note: "Inventory of models and versions; contracts address liability for changes over time", confidence: verified}
       - {fw: finos, ref: AIR-PREV-007, note: "Contracts cover model versioning and change notification", confidence: verified, url: "https://air-governance-framework.finos.org/mitigations/mi-7_legal-and-contractual-frameworks-for-ai-systems.html"}
       - {fw: finos, ref: AIR-PREV-010, note: "Advance notice of new versions and deprecations", confidence: verified, url: "https://air-governance-framework.finos.org/mitigations/mi-10_ai-model-version-pinning.html"}
       - {fw: aicm, ref: CCC-05; STA-08; STA-16, note: "Change agreements, supply chain inventory, service BOM", confidence: title-only}
@@ -671,7 +671,7 @@ items:
       - {fw: nist_rmf, ref: MANAGE 4.1, note: "Post-deployment monitoring incl. change management", confidence: verified}
       - {fw: finos, ref: AIR-PREV-005, note: "System acceptance testing", confidence: verified, url: "https://air-governance-framework.finos.org/mitigations/mi-5_system-acceptance-testing.html"}
       - {fw: finos, ref: AIR-PREV-025, note: "Skill and plugin integrity", confidence: verified, url: "https://air-governance-framework.finos.org/mitigations/mi-25_skill-plugin-integrity-and-governance.html"}
-      - {fw: nist_600_1, ref: MS-2.8-003, note: "Version control across the lifecycle", confidence: verified}
+      - {fw: nist_600_1, ref: MS-2.8-003, note: "Version control across the lifecycle (content provenance)", confidence: verified}
 
   - id: CHG-03
     group: CHG
@@ -688,7 +688,7 @@ items:
     capabilities: []
     references:
       - {fw: fsisac, ref: Level 2, note: "Model validation", confidence: verified}
-      - {fw: naic, ref: "Sec. 3, 3.3(c); 3.4", note: "Drift and auditability; validation and retesting", confidence: secondary}
+      - {fw: naic, ref: "Sec. 3, 3.3(c); 3.4", note: "Drift and auditability; validation and retesting", confidence: verified}
       - {fw: nydfs_cl7, ref: "¶15-¶17; ¶32", note: "Testing and independent review", confidence: verified}
       - {fw: nist_rmf, ref: MEASURE 2.3 / 2.5 / 2.11, note: "Performance, validity and fairness", confidence: verified}
       - {fw: aicm, ref: MDS-10; GRC-11; A&A-02, note: "Continuous monitoring, bias assessment, independent assessments", confidence: title-only}
@@ -776,7 +776,7 @@ items:
     often_unevidenced: true
     capabilities: [review_record, action_record]
     references:
-      - {fw: naic, ref: "Sec. 3 (risk factors)", note: "Extent of human involvement in final decisions", confidence: secondary}
+      - {fw: naic, ref: "Sec. 3 (risk factors)", note: "Extent of human involvement in final decisions", confidence: verified}
       - {fw: nydfs_ai, ref: Training, note: "When human review must be part of verification", confidence: verified}
       - {fw: nist_rmf, ref: GOVERN 3.2; MAP 3.5, note: "Human-AI roles and oversight processes defined", confidence: verified}
       - {fw: eu_ai_act, ref: "Art. 14", note: "Human oversight measures for high-risk systems", confidence: verified, url: "https://artificialintelligenceact.eu/article/14/"}
@@ -839,7 +839,7 @@ items:
     often_unevidenced: true
     capabilities: [pack]
     references:
-      - {fw: naic, ref: "Sec. 3, 4.2(a); 4.3", note: "Audit rights or audit reports; exercise of audit rights", confidence: secondary}
+      - {fw: naic, ref: "Sec. 3, 4.2(a); 4.3", note: "Audit rights or audit reports; exercise of audit rights", confidence: verified}
       - {fw: nydfs_cl7, ref: "¶37", note: "Audit rights or reports in vendor contracts", confidence: verified}
       - {fw: dora, ref: "Art. 28(6); Art. 30(3)(e)", note: "Audits; access, inspection and audit rights", confidence: verified, url: "https://www.digital-operational-resilience-act.com/Article_30.html"}
       - {fw: fsisac, ref: Level 3, note: "Audit validation", confidence: verified}
@@ -859,7 +859,7 @@ items:
     often_unevidenced: false
     capabilities: [pack]
     references:
-      - {fw: naic, ref: "Sec. 3, 4.2(b); Sec. 4", note: "Cooperation with regulatory inquiries; documents regulators may request", confidence: secondary}
+      - {fw: naic, ref: "Sec. 3, 4.2(b); Sec. 4", note: "Cooperation with regulatory inquiries; documents regulators may request", confidence: verified}
       - {fw: nydfs_cl7, ref: "¶9; ¶37", note: "DFS exam authority; cooperation clause", confidence: verified}
       - {fw: dora, ref: "Art. 30(2)(g)", note: "Full cooperation with competent authorities", confidence: verified, url: "https://www.digital-operational-resilience-act.com/Article_30.html"}
       - {fw: eu_ai_act, ref: "Art. 18", note: "Provider documentation kept for authorities", confidence: verified, url: "https://artificialintelligenceact.eu/article/18/"}
