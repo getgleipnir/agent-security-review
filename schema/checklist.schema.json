@@ -1,0 +1,110 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/getgleipnir/agent-security-review/schema/checklist.schema.json",
+  "title": "AI Agent Security Review Checklist",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "updated", "groups", "frameworks", "items"],
+  "properties": {
+    "version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+    "updated": { "type": "string", "format": "date" },
+    "groups": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "title", "summary"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[A-Z]{3}$" },
+          "title": { "type": "string", "minLength": 1 },
+          "summary": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "frameworks": {
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": { "pattern": "^[a-z0-9_]+$" },
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "short", "url", "version", "kind", "access"],
+        "properties": {
+          "name": { "type": "string" },
+          "short": { "type": "string" },
+          "url": { "type": "string", "format": "uri" },
+          "version": { "type": "string" },
+          "kind": { "enum": ["binding", "supervisory", "industry", "voluntary", "standard"] },
+          "access": { "type": "string" }
+        }
+      }
+    },
+    "items": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/item" }
+    }
+  },
+  "$defs": {
+    "capability": {
+      "description": "Machine-checkable evidence capabilities. Tools (for example an SDK) can report which capabilities a setup provides and derive coverage per item.",
+      "enum": [
+        "action_record",
+        "identity_binding",
+        "scope_record",
+        "model_version",
+        "config_version",
+        "outcome_check",
+        "signed_records",
+        "hash_chain",
+        "external_anchor",
+        "offline_verifier",
+        "buyer_copy",
+        "retention_policy",
+        "export",
+        "review_record",
+        "redaction",
+        "report",
+        "pack"
+      ]
+    },
+    "reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["fw", "ref", "note", "confidence"],
+      "properties": {
+        "fw": { "type": "string", "pattern": "^[a-z0-9_]+$" },
+        "ref": { "type": "string", "minLength": 1 },
+        "note": { "type": "string", "minLength": 1, "maxLength": 160 },
+        "confidence": {
+          "description": "verified = checked against the primary text; secondary = checked against a reliable secondary source because the primary is gated or unreadable; title-only = only the control title was available.",
+          "enum": ["verified", "secondary", "title-only"]
+        },
+        "url": { "type": "string", "format": "uri" }
+      }
+    },
+    "item": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "group", "origin", "question", "why", "evidence", "not_enough", "often_unevidenced", "capabilities", "references"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[A-Z]{3}-\\d{2}$" },
+        "group": { "type": "string", "pattern": "^[A-Z]{3}$" },
+        "origin": { "enum": ["buyer-question", "derived"] },
+        "derived_from": { "type": "string" },
+        "question": { "type": "string", "minLength": 10 },
+        "why": { "type": "string", "minLength": 10 },
+        "evidence": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+        "not_enough": { "type": "array", "items": { "type": "string" } },
+        "often_unevidenced": { "type": "boolean" },
+        "capabilities": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/capability" } },
+        "references": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/reference" } },
+        "deprecated": { "type": "boolean" },
+        "note": { "type": "string" }
+      },
+      "if": { "properties": { "origin": { "const": "derived" } } },
+      "then": { "required": ["derived_from"] }
+    }
+  }
+}
