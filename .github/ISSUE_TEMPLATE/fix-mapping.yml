@@ -1,0 +1,57 @@
+name: Fix a mapping
+description: A framework reference is wrong, outdated, missing or too weak.
+title: "[mapping] "
+labels: ["mapping"]
+body:
+  - type: input
+    id: item
+    attributes:
+      label: Checklist item ID
+      placeholder: "e.g. TMP-01"
+    validations:
+      required: true
+  - type: dropdown
+    id: framework
+    attributes:
+      label: Framework
+      options:
+        - FINOS AI Governance Framework
+        - FS-ISAC GenAI vendor risk
+        - NAIC AI Model Bulletin
+        - NYDFS Part 500
+        - NYDFS AI Industry Letter
+        - NYDFS Circular Letter 7
+        - CSA AICM / AI-CAIQ
+        - ISO/IEC 42001
+        - NIST AI RMF / AI 600-1
+        - EU AI Act
+        - DORA
+        - SIG
+        - Other (new framework)
+    validations:
+      required: true
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What's wrong
+      options:
+        - Wrong control or section
+        - Paraphrase is inaccurate
+        - Outdated (new version or amendment)
+        - Missing reference
+        - Confidence level is wrong
+        - Broken link
+    validations:
+      required: true
+  - type: textarea
+    id: details
+    attributes:
+      label: Details and suggested fix
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Link to the exact source section
+    validations:
+      required: true

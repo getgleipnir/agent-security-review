@@ -1,0 +1,60 @@
+name: Add a question I was asked
+description: A buyer asked you something about your AI agent that this checklist doesn't cover (or covers badly).
+title: "[question] "
+labels: ["new-question"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Paraphrase the question. Don't paste confidential questionnaires and don't name the buyer unless the source is public.
+  - type: textarea
+    id: question
+    attributes:
+      label: The question, as the buyer phrased it (paraphrased)
+      placeholder: "e.g. Can you show that the agent's credit amount matched what our ledger recorded?"
+    validations:
+      required: true
+  - type: dropdown
+    id: buyer_type
+    attributes:
+      label: Buyer type
+      options:
+        - Bank
+        - Credit union
+        - Lender / fintech
+        - Insurer
+        - Payments
+        - Other regulated
+        - Other
+    validations:
+      required: true
+  - type: dropdown
+    id: stage
+    attributes:
+      label: Where it came up
+      options:
+        - Written questionnaire
+        - Security review call
+        - Model risk / validation review
+        - Contract negotiation
+        - Audit or exam
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: related
+    attributes:
+      label: Closest existing item ID (if any)
+      placeholder: "e.g. OUT-01"
+  - type: textarea
+    id: why
+    attributes:
+      label: Why they asked, if they said
+  - type: textarea
+    id: evidence
+    attributes:
+      label: What evidence satisfied them (or what they wanted)
+  - type: textarea
+    id: framework
+    attributes:
+      label: Framework or regulation they cited, with section if known
