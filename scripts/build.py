@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate checklist.md, checklist.csv and mappings/*.md from checklist.yaml.
+"""Generate checklist.md, checklist.csv, mappings/*.md, the fill-in templates and site/ from checklist.yaml.
 
 Usage:
   python scripts/build.py          # write generated files
@@ -14,6 +14,7 @@ from collections import defaultdict
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+from kitpage import render_site  # noqa: E402
 from validate import ROOT, check, load_checklist  # noqa: E402
 
 GENERATED_NOTE = "<!-- Generated from checklist.yaml by scripts/build.py. Do not edit by hand. -->"
@@ -28,6 +29,7 @@ KIND_LABEL = {
     "industry": "Industry framework",
     "voluntary": "Voluntary government framework",
     "standard": "Certifiable standard",
+    "attestation": "Attestation criteria (an auditor's report, not a certification)",
 }
 
 
@@ -54,8 +56,11 @@ def render_checklist_md(data: dict) -> str:
     out.append("")
     out.append("- **Question**: how buyers usually phrase it in a questionnaire or review call.")
     out.append("- **Why they ask**: the risk or obligation behind it.")
-    out.append("- **Evidence that satisfies it**: what to have ready.")
+    out.append("- **What a strong answer looks like**: the bar reviewers are looking for.")
+    out.append("- **Evidence that satisfies it**: what to attach.")
     out.append("- **Not enough on its own**: answers that usually trigger a follow-up.")
+    out.append("- **Template answer**: a starting point; replace every [bracketed] part with what your system "
+               "actually does, and delete what isn't true.")
     out.append("- **References**: framework controls that cover the topic, with how we checked them "
                "(*verified* = primary text; *secondary source* = primary is gated, checked via a reliable "
                "secondary source; *title only* = only the control title was available).")
@@ -89,6 +94,8 @@ def render_checklist_md(data: dict) -> str:
                 out.append("")
             out.append(f"**Why they ask.** {item['why']}")
             out.append("")
+            out.append(f"**What a strong answer looks like.** {item['strong_answer']}")
+            out.append("")
             out.append("**Evidence that satisfies it**")
             out.append("")
             out.extend(f"- {e}" for e in item["evidence"])
@@ -98,6 +105,10 @@ def render_checklist_md(data: dict) -> str:
                 out.append("")
                 out.extend(f"- {e}" for e in item["not_enough"])
                 out.append("")
+            out.append("**Template answer**")
+            out.append("")
+            out.append(f"> {item['template_answer']}")
+            out.append("")
             if item.get("note"):
                 out.append(f"*Note: {item['note']}*")
                 out.append("")
@@ -133,8 +144,8 @@ def render_csv(data: dict) -> str:
     buf = io.StringIO()
     writer = csv.writer(buf, lineterminator="\n")
     writer.writerow([
-        "id", "group", "question", "why_they_ask", "evidence_that_satisfies",
-        "not_enough_on_its_own", "hard_to_evidence_today", "references",
+        "id", "group", "question", "why_they_ask", "strong_answer", "evidence_that_satisfies",
+        "not_enough_on_its_own", "template_answer", "hard_to_evidence_today", "references",
         "your_answer", "evidence_link",
     ])
     for item in data["items"]:
@@ -143,8 +154,10 @@ def render_csv(data: dict) -> str:
             groups[item["group"]],
             item["question"],
             item["why"],
+            item["strong_answer"],
             " | ".join(item["evidence"]),
             " | ".join(item["not_enough"]),
+            item["template_answer"],
             "yes" if item["often_unevidenced"] else "no",
             "; ".join(f"{fws[r['fw']]['short']} {r['ref']}" for r in item["references"]),
             "",
@@ -224,12 +237,62 @@ def render_mappings_index(data: dict) -> str:
     return "\n".join(out)
 
 
+def render_answers_json(data: dict) -> str:
+    """Fill-in template a vendor completes. Read by the Agent Readiness Scanner."""
+    import json
+
+    from kitpage import STATUS
+
+    doc = {
+        "$schema": "https://github.com/getgleipnir/agent-security-review/schema/answers.schema.json",
+        "kit": "agent-security-review",
+        "kit_version": data["version"],
+        "vendor": "",
+        "product": "",
+        "completed_by": "",
+        "date": "",
+        "status_values": {k: v for k, v in STATUS},
+        "answers": [
+            {
+                "id": i["id"],
+                "question": i["question"],
+                "status": "",
+                "answer": "",
+                "evidence_links": [],
+                "template_answer": i["template_answer"],
+            }
+            for i in data["items"] if not i.get("deprecated")
+        ],
+    }
+    return json.dumps(doc, indent=2, ensure_ascii=False) + "\n"
+
+
+def render_answers_csv(data: dict) -> str:
+    groups = {g["id"]: g["title"] for g in data["groups"]}
+    buf = io.StringIO()
+    writer = csv.writer(buf, lineterminator="\n")
+    writer.writerow(["id", "area", "question", "status", "answer", "evidence_link", "template_answer",
+                     "hard_to_evidence_today"])
+    for i in data["items"]:
+        if i.get("deprecated"):
+            continue
+        writer.writerow([i["id"], groups[i["group"]], i["question"], "", "", "", i["template_answer"],
+                         "yes" if i["often_unevidenced"] else "no"])
+    return buf.getvalue()
+
+
 def outputs(data: dict) -> dict[Path, str]:
     files = {
         ROOT / "checklist.md": render_checklist_md(data),
         ROOT / "checklist.csv": render_csv(data),
         ROOT / "mappings" / "README.md": render_mappings_index(data),
+        ROOT / "answers-template.json": render_answers_json(data),
+        ROOT / "answers-template.csv": render_answers_csv(data),
+        ROOT / "site" / "index.html": render_site(data),
     }
+    # The site serves its own copies so it works without GitHub.
+    for name in ("checklist.md", "answers-template.json", "answers-template.csv"):
+        files[ROOT / "site" / "downloads" / name] = files[ROOT / name]
     for key in data["frameworks"]:
         files[ROOT / "mappings" / f"{key}.md"] = render_framework_md(key, data)
     return files

@@ -24,3 +24,5 @@ jobs:
         run: python scripts/build.py --check
       - name: Check CSV parses
         run: python -c "import csv; rows=list(csv.DictReader(open('checklist.csv'))); assert rows, 'empty csv'; print(len(rows), 'rows')"
+      - name: Check the fill-in template matches its schema
+        run: python -c "import json; from jsonschema import Draft202012Validator as V; V(json.load(open('schema/answers.schema.json'))).validate(json.load(open('answers-template.json'))); print('answers-template.json ok')"

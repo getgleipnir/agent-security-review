@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/getgleipnir/agent-security-review/schema/answers.schema.json",
+  "title": "Agent Security Review Kit: a vendor's answers",
+  "description": "Fill-in file a vendor completes. Start from answers-template.json. Tools such as the Agent Readiness Scanner read this format.",
+  "type": "object",
+  "required": ["kit", "kit_version", "answers"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "kit": { "const": "agent-security-review" },
+    "kit_version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+    "vendor": { "type": "string" },
+    "product": { "type": "string" },
+    "completed_by": { "type": "string" },
+    "date": { "type": "string" },
+    "status_values": { "type": "object", "additionalProperties": { "type": "string" } },
+    "answers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "status"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[A-Z]{3}-\\d{2}$" },
+          "question": { "type": "string" },
+          "status": { "enum": ["", "evidenced", "partial", "policy_only", "missing", "not_applicable"] },
+          "answer": { "type": "string" },
+          "evidence_links": { "type": "array", "items": { "type": "string" } },
+          "template_answer": { "type": "string" }
+        }
+      }
+    }
+  }
+}

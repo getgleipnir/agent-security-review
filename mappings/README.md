@@ -21,41 +21,42 @@ One file per framework. Each lists the controls we map, what they cover, and whi
 | Shared Assessments Standardized Information Gathering (SIG) questionnaire | Industry framework | [sig.md](sig.md) |
 | AIUC-1, the AI agent standard (Artificial Intelligence Underwriting Company) | Certifiable standard | [aiuc1.md](aiuc1.md) |
 | Autonomous Action Runtime Management (AARM) specification, Cloud Security Alliance AARM Working Group | Industry framework | [aarm.md](aarm.md) |
+| AICPA Trust Services Criteria (SOC 2) | Attestation criteria (an auditor's report, not a certification) | [soc2.md](soc2.md) |
 
 ## Coverage matrix
 
-| Item | FINOS AIR | FS-ISAC GenAI | NAIC AI Bulletin | NYDFS 500 | NYDFS AI Letter | NYDFS CL7 | CSA AICM | ISO 42001 | NIST AI RMF | NIST AI 600-1 | EU AI Act | DORA | SIG | AIUC-1 | CSA AARM |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| [ACC-01](../checklist.md#acc-01) | x |  |  | x | x |  | x | x |  |  |  | x | x | x | x |
-| [ACC-02](../checklist.md#acc-02) | x |  |  | x |  |  | x |  |  |  |  |  |  | x | x |
-| [ACC-03](../checklist.md#acc-03) | x |  |  |  |  |  | x |  | x | x | x |  |  | x | x |
-| [ACT-01](../checklist.md#act-01) | x |  | x | x |  | x | x | x |  |  | x |  |  | x | x |
-| [ACT-02](../checklist.md#act-02) | x |  | x |  |  | x | x |  | x | x |  |  |  |  |  |
-| [ACT-03](../checklist.md#act-03) | x |  |  |  | x |  | x |  |  |  |  | x |  | x |  |
-| [ACT-04](../checklist.md#act-04) | x |  |  |  |  |  | x | x |  |  |  |  |  |  |  |
-| [ACT-05](../checklist.md#act-05) |  |  | x |  |  | x | x | x |  | x |  |  |  |  |  |
-| [ACT-06](../checklist.md#act-06) | x |  |  |  |  | x | x |  | x |  | x |  |  |  |  |
-| [ACT-07](../checklist.md#act-07) |  |  |  |  |  |  | x |  |  |  | x |  |  | x |  |
-| [OUT-01](../checklist.md#out-01) | x |  | x | x |  |  |  |  | x |  | x |  |  | x | x |
-| [OUT-02](../checklist.md#out-02) | x |  |  |  |  |  | x | x |  | x |  | x |  |  |  |
-| [TMP-01](../checklist.md#tmp-01) | x |  |  | x |  |  | x |  |  | x |  | x |  | x | x |
-| [TMP-02](../checklist.md#tmp-02) | x |  |  |  |  |  |  |  |  |  | x | x |  | x | x |
-| [TMP-03](../checklist.md#tmp-03) |  |  |  | x |  |  | x |  |  |  |  |  |  | x |  |
-| [INC-01](../checklist.md#inc-01) | x |  |  | x |  |  | x |  | x |  | x | x |  | x | x |
-| [INC-02](../checklist.md#inc-02) | x | x |  | x | x |  | x | x |  | x | x | x |  | x |  |
-| [INC-03](../checklist.md#inc-03) | x |  |  | x |  |  | x | x | x | x | x | x |  |  |  |
-| [RET-01](../checklist.md#ret-01) | x | x |  |  | x |  | x | x |  |  |  | x | x | x | x |
-| [RET-02](../checklist.md#ret-02) |  |  |  | x |  |  |  |  |  |  | x |  |  |  | x |
-| [RET-03](../checklist.md#ret-03) |  |  | x |  |  |  |  | x |  |  | x | x |  |  |  |
-| [RET-04](../checklist.md#ret-04) |  |  | x | x |  |  |  |  |  |  | x | x |  |  |  |
-| [CHG-01](../checklist.md#chg-01) | x | x |  |  | x |  | x | x |  | x |  | x |  |  |  |
-| [CHG-02](../checklist.md#chg-02) | x | x |  |  |  | x | x | x | x | x |  | x |  | x |  |
-| [CHG-03](../checklist.md#chg-03) | x | x | x |  |  | x | x | x | x |  |  |  |  |  |  |
-| [CHG-04](../checklist.md#chg-04) | x |  |  |  |  | x | x | x | x |  | x | x |  | x |  |
-| [DAT-01](../checklist.md#dat-01) | x | x |  | x | x |  | x |  |  | x |  | x |  | x |  |
-| [DAT-02](../checklist.md#dat-02) | x |  |  |  | x |  | x |  |  |  |  | x |  | x |  |
-| [HUM-01](../checklist.md#hum-01) | x |  | x |  | x |  | x | x | x |  | x |  |  | x | x |
-| [HUM-02](../checklist.md#hum-02) | x |  |  |  |  |  | x |  | x |  | x |  |  | x |  |
-| [SUB-01](../checklist.md#sub-01) | x | x |  | x | x |  | x | x | x |  |  | x |  | x |  |
-| [SUB-02](../checklist.md#sub-02) |  | x | x |  |  | x | x |  |  | x |  | x |  |  |  |
-| [SUB-03](../checklist.md#sub-03) |  |  | x |  |  | x |  | x |  |  | x | x |  |  |  |
+| Item | FINOS AIR | FS-ISAC GenAI | NAIC AI Bulletin | NYDFS 500 | NYDFS AI Letter | NYDFS CL7 | CSA AICM | ISO 42001 | NIST AI RMF | NIST AI 600-1 | EU AI Act | DORA | SIG | AIUC-1 | CSA AARM | SOC 2 TSC |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| [ACC-01](../checklist.md#acc-01) | x |  |  | x | x |  | x | x |  |  |  | x | x | x | x | x |
+| [ACC-02](../checklist.md#acc-02) | x |  |  | x |  |  | x |  |  |  |  |  |  | x | x | x |
+| [ACC-03](../checklist.md#acc-03) | x |  |  |  |  |  | x |  | x | x | x |  |  | x | x | x |
+| [ACT-01](../checklist.md#act-01) | x |  | x | x |  | x | x | x |  |  | x |  |  | x | x | x |
+| [ACT-02](../checklist.md#act-02) | x |  | x |  |  | x | x |  | x | x |  |  |  |  |  |  |
+| [ACT-03](../checklist.md#act-03) | x |  |  |  | x |  | x |  |  |  |  | x |  | x |  |  |
+| [ACT-04](../checklist.md#act-04) | x |  |  |  |  |  | x | x |  |  |  |  |  |  |  |  |
+| [ACT-05](../checklist.md#act-05) |  |  | x |  |  | x | x | x |  | x |  |  |  |  |  |  |
+| [ACT-06](../checklist.md#act-06) | x |  |  |  |  | x | x |  | x |  | x |  |  |  |  |  |
+| [ACT-07](../checklist.md#act-07) |  |  |  |  |  |  | x |  |  |  | x |  |  | x |  |  |
+| [OUT-01](../checklist.md#out-01) | x |  | x | x |  |  |  |  | x |  | x |  |  | x | x | x |
+| [OUT-02](../checklist.md#out-02) | x |  |  |  |  |  | x | x |  | x |  | x |  |  |  | x |
+| [TMP-01](../checklist.md#tmp-01) | x |  |  | x |  |  | x |  |  | x |  | x |  | x | x | x |
+| [TMP-02](../checklist.md#tmp-02) | x |  |  |  |  |  |  |  |  |  | x | x |  | x | x |  |
+| [TMP-03](../checklist.md#tmp-03) |  |  |  | x |  |  | x |  |  |  |  |  |  | x |  | x |
+| [INC-01](../checklist.md#inc-01) | x |  |  | x |  |  | x |  | x |  | x | x |  | x | x | x |
+| [INC-02](../checklist.md#inc-02) | x | x |  | x | x |  | x | x |  | x | x | x |  | x |  | x |
+| [INC-03](../checklist.md#inc-03) | x |  |  | x |  |  | x | x | x | x | x | x |  |  |  | x |
+| [RET-01](../checklist.md#ret-01) | x | x |  |  | x |  | x | x |  |  |  | x | x | x | x | x |
+| [RET-02](../checklist.md#ret-02) |  |  |  | x |  |  |  |  |  |  | x |  |  |  | x |  |
+| [RET-03](../checklist.md#ret-03) |  |  | x |  |  |  |  | x |  |  | x | x |  |  |  |  |
+| [RET-04](../checklist.md#ret-04) |  |  | x | x |  |  |  |  |  |  | x | x |  |  |  | x |
+| [CHG-01](../checklist.md#chg-01) | x | x |  |  | x |  | x | x |  | x |  | x |  |  |  | x |
+| [CHG-02](../checklist.md#chg-02) | x | x |  |  |  | x | x | x | x | x |  | x |  | x |  | x |
+| [CHG-03](../checklist.md#chg-03) | x | x | x |  |  | x | x | x | x |  |  |  |  |  |  |  |
+| [CHG-04](../checklist.md#chg-04) | x |  |  |  |  | x | x | x | x |  | x | x |  | x |  | x |
+| [DAT-01](../checklist.md#dat-01) | x | x |  | x | x |  | x |  |  | x |  | x |  | x |  | x |
+| [DAT-02](../checklist.md#dat-02) | x |  |  |  | x |  | x |  |  |  |  | x |  | x |  | x |
+| [HUM-01](../checklist.md#hum-01) | x |  | x |  | x |  | x | x | x |  | x |  |  | x | x |  |
+| [HUM-02](../checklist.md#hum-02) | x |  |  |  |  |  | x |  | x |  | x |  |  | x |  |  |
+| [SUB-01](../checklist.md#sub-01) | x | x |  | x | x |  | x | x | x |  |  | x |  | x |  | x |
+| [SUB-02](../checklist.md#sub-02) |  | x | x |  |  | x | x |  |  | x |  | x |  |  |  | x |
+| [SUB-03](../checklist.md#sub-03) |  |  | x |  |  | x |  | x |  |  | x | x |  |  |  |  |
