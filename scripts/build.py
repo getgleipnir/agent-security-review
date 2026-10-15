@@ -238,7 +238,7 @@ def render_mappings_index(data: dict) -> str:
 
 
 def render_answers_json(data: dict) -> str:
-    """Fill-in template a vendor completes. Read by the Agent Readiness Scanner."""
+    """Fill-in template a vendor completes; tools can read the completed file."""
     import json
 
     from kitpage import STATUS

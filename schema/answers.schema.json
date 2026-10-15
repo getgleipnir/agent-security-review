@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/getgleipnir/agent-security-review/schema/answers.schema.json",
   "title": "Agent Security Review Kit: a vendor's answers",
-  "description": "Fill-in file a vendor completes. Start from answers-template.json. Tools such as the Agent Readiness Scanner read this format.",
+  "description": "Fill-in file a vendor completes. Start from answers-template.json. Tools can read this format.",
   "type": "object",
   "required": ["kit", "kit_version", "answers"],
   "properties": {

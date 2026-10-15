@@ -29,7 +29,7 @@ One file per framework. Each lists the controls we map, what they cover, and whi
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | [ACC-01](../checklist.md#acc-01) | x |  |  | x | x |  | x | x |  |  |  | x | x | x | x | x |
 | [ACC-02](../checklist.md#acc-02) | x |  |  | x |  |  | x |  |  |  |  |  |  | x | x | x |
-| [ACC-03](../checklist.md#acc-03) | x |  |  |  |  |  | x |  | x | x | x |  |  | x | x | x |
+| [ACC-03](../checklist.md#acc-03) | x |  |  |  |  |  | x |  | x | x | x |  |  | x | x |  |
 | [ACT-01](../checklist.md#act-01) | x |  | x | x |  | x | x | x |  |  | x |  |  | x | x | x |
 | [ACT-02](../checklist.md#act-02) | x |  | x |  |  | x | x |  | x | x |  |  |  |  |  |  |
 | [ACT-03](../checklist.md#act-03) | x |  |  |  | x |  | x |  |  |  |  | x |  | x |  |  |
@@ -52,11 +52,11 @@ One file per framework. Each lists the controls we map, what they cover, and whi
 | [CHG-01](../checklist.md#chg-01) | x | x |  |  | x |  | x | x |  | x |  | x |  |  |  | x |
 | [CHG-02](../checklist.md#chg-02) | x | x |  |  |  | x | x | x | x | x |  | x |  | x |  | x |
 | [CHG-03](../checklist.md#chg-03) | x | x | x |  |  | x | x | x | x |  |  |  |  |  |  |  |
-| [CHG-04](../checklist.md#chg-04) | x |  |  |  |  | x | x | x | x |  | x | x |  | x |  | x |
+| [CHG-04](../checklist.md#chg-04) | x |  |  |  |  | x | x | x | x |  | x | x |  | x |  |  |
 | [DAT-01](../checklist.md#dat-01) | x | x |  | x | x |  | x |  |  | x |  | x |  | x |  | x |
 | [DAT-02](../checklist.md#dat-02) | x |  |  |  | x |  | x |  |  |  |  | x |  | x |  | x |
 | [HUM-01](../checklist.md#hum-01) | x |  | x |  | x |  | x | x | x |  | x |  |  | x | x |  |
 | [HUM-02](../checklist.md#hum-02) | x |  |  |  |  |  | x |  | x |  | x |  |  | x |  |  |
 | [SUB-01](../checklist.md#sub-01) | x | x |  | x | x |  | x | x | x |  |  | x |  | x |  | x |
-| [SUB-02](../checklist.md#sub-02) |  | x | x |  |  | x | x |  |  | x |  | x |  |  |  | x |
+| [SUB-02](../checklist.md#sub-02) |  | x | x |  |  | x | x |  |  | x |  | x |  |  |  |  |
 | [SUB-03](../checklist.md#sub-03) |  |  | x |  |  | x |  | x |  |  | x | x |  |  |  |  |

@@ -43,7 +43,8 @@ def render_item(item: dict, fws: dict) -> str:
     not_enough = "".join(f"<li>{esc(e)}</li>" for e in item["not_enough"])
     note = f'<p class="note">{esc(item["note"])}</p>' if item.get("note") else ""
     search = " ".join([iid, item["question"], item["why"], item["strong_answer"], item["template_answer"],
-                       *item["evidence"]]).lower()
+                       *item["evidence"], *item["not_enough"],
+                       *(f'{fws[r["fw"]]["short"]} {r["ref"]} {r["note"]}' for r in item["references"])]).lower()
     flag = '<span class="flag">Hard to evidence today</span>' if hard else ""
     return f"""
 <details class="item" id="{iid.lower()}" data-hard="{str(hard).lower()}" data-search="{esc(search)}">
@@ -54,6 +55,7 @@ def render_item(item: dict, fws: dict) -> str:
     <section><h4>Evidence to attach</h4><ul>{evidence}</ul></section>
     {f'<section class="weak"><h4>Not enough on its own</h4><ul>{not_enough}</ul></section>' if not_enough else ""}
     <section class="template"><h4>Template answer</h4>
+      <p class="hint">Fill every blank with what your system actually does. If a sentence isn't true for you, delete it and say what you do instead.</p>
       <p class="form" data-raw="{esc(item["template_answer"])}">{blanks(item["template_answer"])}</p>
       <button type="button" class="copy">Copy template</button>
     </section>
@@ -179,6 +181,7 @@ details.item[open] > summary {{ border-bottom: 1px solid var(--rule); }}
   color: var(--muted); font-size: 0.92em;
   -webkit-box-decoration-break: clone; box-decoration-break: clone; }}
 .copy {{ margin-top: 8px; }}
+.hint {{ font-size: 14px; color: var(--muted); margin: 0 0 8px !important; }}
 .note {{ font-size: 15px; color: var(--muted); margin-top: 16px !important; }}
 details.refs {{ margin-top: 16px; font-size: 14px; }}
 details.refs summary {{ cursor: pointer; color: var(--muted); font-weight: 600; }}
@@ -289,7 +292,13 @@ footer ul {{ padding-left: 20px; margin: 0 0 20px; }}
     if (!b) return;
     var text = b.parentNode.querySelector(".form").dataset.raw;
     var done = function () {{ b.textContent = "Copied"; setTimeout(function () {{ b.textContent = "Copy template"; }}, 1500); }};
-    if (navigator.clipboard) navigator.clipboard.writeText(text).then(done, function () {{ b.textContent = "Select and copy the text above"; }});
+    var fallback = function () {{
+      var r = document.createRange(); r.selectNodeContents(b.parentNode.querySelector(".form"));
+      var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+      b.textContent = "Selected: press Ctrl+C or Cmd+C";
+    }};
+    if (navigator.clipboard && window.isSecureContext !== false) navigator.clipboard.writeText(text).then(done, fallback);
+    else fallback();
   }});
   function openHash() {{
     var el = location.hash && document.getElementById(location.hash.slice(1));

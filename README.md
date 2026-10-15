@@ -22,7 +22,7 @@ Free, vendor-neutral, no signup. Content under CC BY 4.0.
 | [`site/downloads/agent-security-review-kit.pdf`](site/downloads/agent-security-review-kit.pdf) | The same, as a PDF to print or attach |
 | [`checklist.md`](checklist.md) | The same, as Markdown |
 | [`answers-template.csv`](answers-template.csv) | Fill-in sheet: `status`, `answer`, `evidence_link` per question |
-| [`answers-template.json`](answers-template.json) | Fill-in file for tools ([schema](schema/answers.schema.json)) |
+| [`answers-template.json`](answers-template.json) | Fill-in file for tools, with `evidence_links` as a list ([schema](schema/answers.schema.json)) |
 | [`checklist.csv`](checklist.csv) | Every field in one table, for questionnaires and trackers |
 | [`checklist.yaml`](checklist.yaml) | Source of truth with stable IDs |
 | [`mappings/`](mappings/) | One table per framework, plus a coverage matrix |
@@ -79,7 +79,7 @@ Each reference was checked against its source (most on 2026-10-14; AIUC-1, CSA A
 
 Paraphrases are ours and short. Read the source before relying on one. Worth knowing:
 
-- **Tamper evidence and independent verification.** Three frameworks explicitly ask for audit records that are tamper-evident *and* independently verifiable: the FINOS AI Governance Framework (AIR-DET-021), AIUC-1 (E015.4, a supplemental control under the mandatory logging requirement E015) and the CSA AARM specification (R5, signed receipts per action, verifiable offline). DORA's RTS (2024/1774, Art. 12) requires logs to be protected against tampering and deletion. NYDFS Part 500, NAIC, the EU AI Act, ISO/IEC 42001 and SOC 2 require records to exist, be retained and support reconstruction, without naming a mechanism.
+- **Tamper evidence and independent verification.** Three frameworks explicitly ask for audit records that are tamper-evident *and* independently verifiable: the FINOS AI Governance Framework (AIR-DET-021), AIUC-1 (E015.4, a supplemental control under the mandatory logging requirement E015) and the CSA AARM specification (R5, signed receipts per action, verifiable offline). DORA's RTS (2024/1774, Art. 12) requires logs to be protected against tampering and deletion. NYDFS Part 500, NAIC, the EU AI Act and ISO/IEC 42001 require records to exist, be retained and support reconstruction, without naming a mechanism. SOC 2 criteria cover logging, monitoring and processing integrity, also without naming a tamper-evidence mechanism.
 - **EU AI Act.** Art. 12 requires automatic event logging for high-risk systems, and Art. 19 and 26(6) set log retention of at least six months. High-risk obligations for Annex III use cases, including credit scoring and life and health insurance pricing, apply from **2 December 2027** after the Digital Omnibus on AI (Regulation (EU) 2026/1744).
 - **SOC 2** is an auditor's attestation report against the AICPA Trust Services Criteria, not a certification. It covers the vendor's controls, not individual agent actions, which is why a SOC 2 report alone rarely closes the agent-specific questions. The criteria text was checked against the AICPA's 2020 edition; the 2022 revision changed the points of focus, not the criteria.
 - **Gated sources.** The FS-ISAC question workbook, SIG question text and AI-CAIQ question text are licensed or login-gated, so this kit maps to their published categories and control IDs, not their exact wording.

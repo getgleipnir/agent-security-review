@@ -20,7 +20,7 @@
       "status": "",
       "answer": "",
       "evidence_links": [],
-      "template_answer": "The agent can call [N] tools: [list tool, target system and allowed operations, e.g. \"issue_refund on Stripe, up to EUR 200 per refund\"]. Each call passes through [enforcement layer, e.g. a tool gateway] that checks [allowlist, parameter limits, scoped credential] before execution; calls outside scope are blocked and logged. We test this in [CI suite / quarterly test], last run [date], results attached. Each action record stores the scope that applied (sample attached)."
+      "template_answer": "The agent can call [N] tools: [list tool, target system and allowed operations, e.g. \"issue_refund on the payment provider, up to EUR 200 per refund\"]. Each call passes through [enforcement layer, e.g. a tool gateway] that checks [allowlist, parameter limits, scoped credential] before execution; calls outside scope are [blocked and logged / describe what happens]. We test this in [CI suite / quarterly test], last run [date], results attached. Each action record stores [the scope that applied] (sample attached)."
     },
     {
       "id": "ACC-02",
@@ -28,7 +28,7 @@
       "status": "",
       "answer": "",
       "evidence_links": [],
-      "template_answer": "Each deployment uses a dedicated identity, [identity name / service principal], which appears in your [system] audit logs. Every action record contains agent ID, agent version, credential ID (never the secret), scope, and the initiating [user / case / ticket] ID. Credentials are held in [vault / KMS] and injected per call; the model never sees them. A sample record joined to your system log is attached."
+      "template_answer": "Agent actions in your [system] run under [a dedicated identity per deployment, name / a shared account: describe], which appears in your audit logs as [identity]. Every action record contains [agent ID, agent version, credential ID (never the secret), scope, initiating user / case / ticket ID]. Credentials are held in [vault / KMS] and [injected per call so the model never sees them / describe how exposure is limited]. A sample record joined to your system log is attached."
     },
     {
       "id": "ACC-03",
@@ -36,7 +36,7 @@
       "status": "",
       "answer": "",
       "evidence_links": [],
-      "template_answer": "Untrusted content ([emails, documents, web pages, tool outputs]) is kept separate from instructions by [method]. Before any tool call, [validator] checks tool choice and parameters against [policy]; the model cannot bypass it. Our last red-team exercise on [date], by [internal team / third party], covered direct and indirect injection; a summary is attached. Unusual actions are flagged by [rule / monitor]."
+      "template_answer": "Untrusted content ([emails, documents, web pages, tool outputs]) is kept separate from instructions by [method], and inputs and outputs are filtered by [method]. Before any tool call, [validator] checks tool choice and parameters against [policy]; [how you prevent the model from bypassing it, and how that is tested]. Our last red-team exercise on [date], by [internal team / third party], covered [direct and indirect injection]; a summary is attached. Unusual actions are flagged by [rule / monitor]."
     },
     {
       "id": "ACT-01",
@@ -116,7 +116,7 @@
       "status": "",
       "answer": "",
       "evidence_links": [],
-      "template_answer": "Action records are append-only and hash-chained: each record includes the hash of the previous one. Records are signed with [Ed25519 / P-256] keys held in [KMS / HSM], separate from the people who run the agent. Every [period] we commit a digest of the latest segment [to an external log / to you], so truncation is also detectable. Key management is documented in [document]."
+      "template_answer": "Action records are [append-only and hash-chained, each record including the hash of the previous one / describe]. Records are signed with [algorithm] keys held in [KMS / HSM], [separate from the people who run the agent / describe]. Every [period] we commit a digest of the latest records [to an external log / to you], so [truncation is also detectable / describe]. Clocks are synchronized via [time source]. Key management is documented in [document]."
     },
     {
       "id": "TMP-02",
@@ -124,7 +124,7 @@
       "status": "",
       "answer": "",
       "evidence_links": [],
-      "template_answer": "You can verify records yourself. We export a bundle for any period; you run [verifier, e.g. an open-source CLI] offline against it with our published public key [key ID]. Segment digests are also anchored in [external log / your storage], so we cannot rewrite history without detection. A sample bundle, the verification steps and a tampered example that fails are attached."
+      "template_answer": "To verify records yourself, you [run verifier, e.g. an open-source CLI, offline against an exported bundle / describe current process] using our published public key [key ID]. Segment digests are anchored in [external log / your storage], so [what a rewrite of history would show, and to whom]. A sample bundle, the verification steps and a tampered example that fails are attached."
     },
     {
       "id": "TMP-03",
@@ -132,7 +132,7 @@
       "status": "",
       "answer": "",
       "evidence_links": [],
-      "template_answer": "Access to record storage is limited to [roles, number of people]; access to signing keys to [roles]. Every access is logged against an individual identity and reviewed [frequency]. People who operate the agent cannot change records or keys. The latest access review is attached."
+      "template_answer": "Access to record storage is limited to [roles, number of people]; access to signing keys to [roles]. Every access is [logged against an individual identity and reviewed every period / describe]. People who operate the agent [cannot change records or keys / describe the separation]. The latest access review is attached."
     },
     {
       "id": "INC-01",
@@ -140,7 +140,7 @@
       "status": "",
       "answer": "",
       "evidence_links": [],
-      "template_answer": "For any time window or case we can export every agent action across [systems], in order, with identity, scope, inputs and system responses. The hash chain shows the sequence is complete and unaltered. In our last tabletop on [date], a full reconstruction took [time]."
+      "template_answer": "For any time window or case we can export [every agent action across systems], in order, with [identity, scope, inputs and system responses]. [Mechanism, e.g. a hash chain plus externally committed digests] shows the exported sequence has not been altered or cut short. In our last tabletop on [date], a full reconstruction took [time]."
     },
     {
       "id": "INC-02",
@@ -164,7 +164,7 @@
       "status": "",
       "answer": "",
       "evidence_links": [],
-      "template_answer": "We log [event types: actions, tool calls, outcomes, reviews, config changes]. Retention: [period per type]. Access: [roles]. You can receive records via [API / scheduled delivery / SIEM integration, e.g. Splunk, S3] in [format]. A sample export is attached."
+      "template_answer": "We log [event types: actions, tool calls, outcomes, reviews, config changes]. Retention: [period per type]. Access: [roles]. You can receive records via [API / scheduled delivery / your SIEM or object storage] in [format]. A sample export is attached."
     },
     {
       "id": "RET-02",
@@ -228,7 +228,7 @@
       "status": "",
       "answer": "",
       "evidence_links": [],
-      "template_answer": "Your data is not used to train or improve any model, by us or by [providers], per [contract clause / provider terms]. Retention: prompts [period], uploads [period], outputs [period]; [zero-retention terms with provider where available]. Deletion follows [procedure], and we confirm it in writing on request."
+      "template_answer": "Your data [is not used / is used, under these conditions:] to train or improve any model, by us or by [providers], per [contract clause / provider terms]. Retention: prompts [period], uploads [period], outputs [period]; [zero-retention terms with providers where available]. Deletion follows [procedure], and we [confirm it in writing on request]."
     },
     {
       "id": "DAT-02",

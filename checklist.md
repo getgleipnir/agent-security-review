@@ -54,7 +54,7 @@ What the agent can do in the buyer's systems, under which identity, and how that
 
 **Template answer**
 
-> The agent can call [N] tools: [list tool, target system and allowed operations, e.g. "issue_refund on Stripe, up to EUR 200 per refund"]. Each call passes through [enforcement layer, e.g. a tool gateway] that checks [allowlist, parameter limits, scoped credential] before execution; calls outside scope are blocked and logged. We test this in [CI suite / quarterly test], last run [date], results attached. Each action record stores the scope that applied (sample attached).
+> The agent can call [N] tools: [list tool, target system and allowed operations, e.g. "issue_refund on the payment provider, up to EUR 200 per refund"]. Each call passes through [enforcement layer, e.g. a tool gateway] that checks [allowlist, parameter limits, scoped credential] before execution; calls outside scope are [blocked and logged / describe what happens]. We test this in [CI suite / quarterly test], last run [date], results attached. Each action record stores [the scope that applied] (sample attached).
 
 **References**
 
@@ -83,7 +83,7 @@ What the agent can do in the buyer's systems, under which identity, and how that
 
 **Why they ask.** Agents often act through shared service accounts or human-style browser logins, so the buyer's own logs cannot tell the agent from a staff member, and the vendor's logs cannot be matched to the buyer's.
 
-**What a strong answer looks like.** Each agent deployment has its own non-human identity in the buyer's systems, and every action record carries agent ID and version, credential ID, scope and the user, case or ticket it acted for, so the buyer's logs and the vendor's records can be joined.
+**What a strong answer looks like.** Each agent deployment has its own non-human identity in the buyer's systems, credentials are kept away from the model, and every action record carries agent ID and version, credential ID, scope and the user, case or ticket it acted for, so the buyer's logs and the vendor's records can be joined.
 
 **Evidence that satisfies it**
 
@@ -98,7 +98,7 @@ What the agent can do in the buyer's systems, under which identity, and how that
 
 **Template answer**
 
-> Each deployment uses a dedicated identity, [identity name / service principal], which appears in your [system] audit logs. Every action record contains agent ID, agent version, credential ID (never the secret), scope, and the initiating [user / case / ticket] ID. Credentials are held in [vault / KMS] and injected per call; the model never sees them. A sample record joined to your system log is attached.
+> Agent actions in your [system] run under [a dedicated identity per deployment, name / a shared account: describe], which appears in your audit logs as [identity]. Every action record contains [agent ID, agent version, credential ID (never the secret), scope, initiating user / case / ticket ID]. Credentials are held in [vault / KMS] and [injected per call so the model never sees them / describe how exposure is limited]. A sample record joined to your system log is attached.
 
 **References**
 
@@ -122,7 +122,7 @@ What the agent can do in the buyer's systems, under which identity, and how that
 
 **Why they ask.** Agents read untrusted content (emails, documents, web pages, tool outputs). If that content can steer a tool call, an attacker can act inside the buyer's systems through the agent.
 
-**What a strong answer looks like.** Treats retrieved content as untrusted, validates tool choice and parameters before execution independently of the model, has red-team results that include indirect injection, and can detect unusual actions after the fact.
+**What a strong answer looks like.** Treats retrieved content as untrusted, filters inputs and outputs, validates tool choice and parameters before execution independently of the model, has red-team results that include indirect injection, and can detect unusual actions after the fact.
 
 **Evidence that satisfies it**
 
@@ -137,7 +137,7 @@ What the agent can do in the buyer's systems, under which identity, and how that
 
 **Template answer**
 
-> Untrusted content ([emails, documents, web pages, tool outputs]) is kept separate from instructions by [method]. Before any tool call, [validator] checks tool choice and parameters against [policy]; the model cannot bypass it. Our last red-team exercise on [date], by [internal team / third party], covered direct and indirect injection; a summary is attached. Unusual actions are flagged by [rule / monitor].
+> Untrusted content ([emails, documents, web pages, tool outputs]) is kept separate from instructions by [method], and inputs and outputs are filtered by [method]. Before any tool call, [validator] checks tool choice and parameters against [policy]; [how you prevent the model from bypassing it, and how that is tested]. Our last red-team exercise on [date], by [internal team / third party], covered [direct and indirect injection]; a summary is attached. Unusual actions are flagged by [rule / monitor].
 
 **References**
 
@@ -154,8 +154,6 @@ What the agent can do in the buyer's systems, under which identity, and how that
 - AIUC-1 [B002](https://standard.aiuc-1.com/security/detect-adversarial-input): Detect and respond to adversarial inputs and prompt injection attempts *(verified)*
 - AIUC-1 [B005](https://standard.aiuc-1.com/security/implement-real-time-input-filtering): Filter inputs before they reach the model *(verified)*
 - CSA AARM [R3](https://arxiv.org/abs/2602.09433): Evaluate each action against static policy and alignment with the user's stated intent *(verified)*
-- SOC 2 TSC CC6.6: Protection against threats from outside the system boundary *(verified)*
-- SOC 2 TSC PI1.2: Controls over system inputs (processing integrity, if in scope) *(verified)*
 
 ## ACT · Action records
 
@@ -464,7 +462,7 @@ Whether records can be changed after the fact without anyone noticing, and who c
 
 **Why they ask.** Access controls protect logs from outsiders, not from the party that writes them. "Immutable" is a claim; reviewers increasingly ask for the mechanism.
 
-**What a strong answer looks like.** Names the mechanism: hash-chained, signed records with keys separated from operators, and periodic commitments (for example Merkle roots) so edits, deletions, reordering and truncation are all detectable.
+**What a strong answer looks like.** Names the mechanism: hash-chained, signed records with keys separated from operators, periodic commitments (for example Merkle roots) so edits, deletions, reordering and truncation are all detectable, and synchronized clocks.
 
 **Evidence that satisfies it**
 
@@ -480,7 +478,7 @@ Whether records can be changed after the fact without anyone noticing, and who c
 
 **Template answer**
 
-> Action records are append-only and hash-chained: each record includes the hash of the previous one. Records are signed with [Ed25519 / P-256] keys held in [KMS / HSM], separate from the people who run the agent. Every [period] we commit a digest of the latest segment [to an external log / to you], so truncation is also detectable. Key management is documented in [document].
+> Action records are [append-only and hash-chained, each record including the hash of the previous one / describe]. Records are signed with [algorithm] keys held in [KMS / HSM], [separate from the people who run the agent / describe]. Every [period] we commit a digest of the latest records [to an external log / to you], so [truncation is also detectable / describe]. Clocks are synchronized via [time source]. Key management is documented in [document].
 
 **References**
 
@@ -520,7 +518,7 @@ Whether records can be changed after the fact without anyone noticing, and who c
 
 **Template answer**
 
-> You can verify records yourself. We export a bundle for any period; you run [verifier, e.g. an open-source CLI] offline against it with our published public key [key ID]. Segment digests are also anchored in [external log / your storage], so we cannot rewrite history without detection. A sample bundle, the verification steps and a tampered example that fails are attached.
+> To verify records yourself, you [run verifier, e.g. an open-source CLI, offline against an exported bundle / describe current process] using our published public key [key ID]. Segment digests are anchored in [external log / your storage], so [what a rewrite of history would show, and to whom]. A sample bundle, the verification steps and a tampered example that fails are attached.
 
 *Note: FINOS, AIUC-1 (E015.4, supplemental) and CSA AARM (R5, offline-verifiable signatures) state independent verifiability explicitly. Elsewhere it follows from audit and access rights.*
 
@@ -552,7 +550,7 @@ Whether records can be changed after the fact without anyone noticing, and who c
 
 **Template answer**
 
-> Access to record storage is limited to [roles, number of people]; access to signing keys to [roles]. Every access is logged against an individual identity and reviewed [frequency]. People who operate the agent cannot change records or keys. The latest access review is attached.
+> Access to record storage is limited to [roles, number of people]; access to signing keys to [roles]. Every access is [logged against an individual identity and reviewed every period / describe]. People who operate the agent [cannot change records or keys / describe the separation]. The latest access review is attached.
 
 **References**
 
@@ -587,7 +585,7 @@ Detecting, reporting, stopping and reconstructing what went wrong.
 
 **Template answer**
 
-> For any time window or case we can export every agent action across [systems], in order, with identity, scope, inputs and system responses. The hash chain shows the sequence is complete and unaltered. In our last tabletop on [date], a full reconstruction took [time].
+> For any time window or case we can export [every agent action across systems], in order, with [identity, scope, inputs and system responses]. [Mechanism, e.g. a hash chain plus externally committed digests] shows the exported sequence has not been altered or cut short. In our last tabletop on [date], a full reconstruction took [time].
 
 **References**
 
@@ -703,7 +701,7 @@ How long records are kept, by whom, and how the buyer gets them.
 
 **Template answer**
 
-> We log [event types: actions, tool calls, outcomes, reviews, config changes]. Retention: [period per type]. Access: [roles]. You can receive records via [API / scheduled delivery / SIEM integration, e.g. Splunk, S3] in [format]. A sample export is attached.
+> We log [event types: actions, tool calls, outcomes, reviews, config changes]. Retention: [period per type]. Access: [roles]. You can receive records via [API / scheduled delivery / your SIEM or object storage] in [format]. A sample export is attached.
 
 **References**
 
@@ -722,7 +720,7 @@ How long records are kept, by whom, and how the buyer gets them.
 
 > Can we hold our own copy of the agent's event logs for the period our rules require? **Hard to evidence today.**
 
-**Why they ask.** Under the EU AI Act, deployers of high-risk systems must keep the logs under their control for at least six months, and financial institutions keep them under their financial-services record rules. A vendor-only copy does not meet that.
+**Why they ask.** Under the EU AI Act, deployers of high-risk systems must keep the logs that are under their control for at least six months, and financial institutions keep them under their financial-services record rules. A buyer-held copy is how a deployer shows it meets that, rather than depending on the vendor.
 
 **What a strong answer looks like.** Delivers records continuously or on a schedule into storage the buyer controls, in a documented format that stays verifiable without the vendor.
 
@@ -845,7 +843,7 @@ Which models run, how changes are controlled, and how behaviour is monitored ove
 - NYDFS AI Letter Data management: Inventory of all systems that use or rely on AI *(verified)*
 - DORA [Art. 28(3)](https://www.digital-operational-resilience-act.com/Article_28.html): Register of ICT third-party arrangements *(verified)*
 - ISO 42001 A.4.4; A.10.3: Tooling resources; suppliers *(secondary source)*
-- SOC 2 TSC CC3.4: Identify and assess changes that could affect internal control *(verified)*
+- SOC 2 TSC CC3.4: Vendor assesses changes that could affect its controls; says nothing about notifying customers *(verified)*
 
 ### CHG-02
 
@@ -853,7 +851,7 @@ Which models run, how changes are controlled, and how behaviour is monitored ove
 
 **Why they ask.** For agents, a prompt edit is a code change. Buyers want the same change control they expect for software.
 
-**What a strong answer looks like.** Versions prompts, tools and configs like code, runs evaluations before release with a named approver, and stores the version on every action record.
+**What a strong answer looks like.** Versions prompts, tools and configs like code, runs evaluations before release with a named approver, stores the version on every action record, and gives the buyer a change history it can review.
 
 **Evidence that satisfies it**
 
@@ -947,7 +945,6 @@ Which models run, how changes are controlled, and how behaviour is monitored ove
 - NYDFS CL7 ¶29-¶30: Monitoring, drift testing and complaints *(verified)*
 - FINOS AIR [AIR-DET-011](https://air-governance-framework.finos.org/mitigations/mi-11_human-feedback-loop-for-ai-systems.html): Human feedback loop *(verified)*
 - AIUC-1 [C008](https://standard.aiuc-1.com/safety/monitor-ai-risk-categories): Ongoing monitoring of AI outputs across risk categories *(verified)*
-- SOC 2 TSC CC7.2: Monitor components for anomalies and evaluate them *(verified)*
 
 ## DAT · Data handling
 
@@ -973,7 +970,7 @@ Training use, retention and deletion of buyer data, including inside agent recor
 
 **Template answer**
 
-> Your data is not used to train or improve any model, by us or by [providers], per [contract clause / provider terms]. Retention: prompts [period], uploads [period], outputs [period]; [zero-retention terms with provider where available]. Deletion follows [procedure], and we confirm it in writing on request.
+> Your data [is not used / is used, under these conditions:] to train or improve any model, by us or by [providers], per [contract clause / provider terms]. Retention: prompts [period], uploads [period], outputs [period]; [zero-retention terms with providers where available]. Deletion follows [procedure], and we [confirm it in writing on request].
 
 **References**
 
@@ -1163,7 +1160,6 @@ Model, voice and tool providers behind the agent, and the buyer's audit and regu
 - FS-ISAC GenAI Level 3: Audit validation *(verified)*
 - CSA AICM A&A-02: Independent assessments *(title only)*
 - NIST AI 600-1 GV-6.1-006: Clauses allowing evaluation of third-party processes *(verified)*
-- SOC 2 TSC CC9.2: Assess and manage risks from vendors and business partners *(verified)*
 
 ### SUB-03
 
