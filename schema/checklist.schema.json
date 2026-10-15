@@ -35,7 +35,7 @@
           "short": { "type": "string" },
           "url": { "type": "string", "format": "uri" },
           "version": { "type": "string" },
-          "kind": { "enum": ["binding", "supervisory", "industry", "voluntary", "standard"] },
+          "kind": { "enum": ["binding", "supervisory", "industry", "voluntary", "standard", "attestation"] },
           "access": { "type": "string" }
         }
       }
@@ -89,7 +89,7 @@
     "item": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["id", "group", "origin", "question", "why", "evidence", "not_enough", "often_unevidenced", "capabilities", "references"],
+      "required": ["id", "group", "origin", "question", "why", "evidence", "not_enough", "strong_answer", "template_answer", "often_unevidenced", "capabilities", "references"],
       "properties": {
         "id": { "type": "string", "pattern": "^[A-Z]{3}-\\d{2}$" },
         "group": { "type": "string", "pattern": "^[A-Z]{3}$" },
@@ -99,6 +99,8 @@
         "why": { "type": "string", "minLength": 10 },
         "evidence": { "type": "array", "minItems": 1, "items": { "type": "string" } },
         "not_enough": { "type": "array", "items": { "type": "string" } },
+        "strong_answer": { "type": "string", "minLength": 20, "description": "What a strong answer looks like, in one to three sentences." },
+        "template_answer": { "type": "string", "minLength": 20, "description": "Fill-in answer a vendor can adapt. Placeholders in [square brackets]." },
         "often_unevidenced": { "type": "boolean" },
         "capabilities": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/capability" } },
         "references": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/reference" } },
