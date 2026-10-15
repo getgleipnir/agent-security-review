@@ -101,6 +101,14 @@
         "not_enough": { "type": "array", "items": { "type": "string" } },
         "strong_answer": { "type": "string", "minLength": 20, "description": "What a strong answer looks like, in one to three sentences." },
         "template_answer": { "type": "string", "minLength": 20, "description": "Fill-in answer a vendor can adapt. Placeholders in [square brackets]." },
+        "scanner": {
+          "description": "Present on the core questions the Readiness Scanner asks by default.",
+          "type": "object", "additionalProperties": false, "required": ["check", "gap"],
+          "properties": {
+            "check": { "type": "string", "minLength": 20, "description": "The question as a vendor self-check." },
+            "gap": { "type": "string", "minLength": 20, "description": "What the gap means, in plain language." }
+          }
+        },
         "often_unevidenced": { "type": "boolean" },
         "capabilities": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/capability" } },
         "references": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/reference" } },

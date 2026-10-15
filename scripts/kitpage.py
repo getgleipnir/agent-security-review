@@ -213,6 +213,7 @@ details.refs ul {{ margin-top: 8px; font-size: 0.9rem; }}
   :root {{ --bg: #fff; --bg-2: #fff; --bg-3: #fff; --line: #c8c8c8; --text: #111; --soft: #222; --muted: #555;
     --gold: #7a5a1c; --gold-lit: #7a5a1c; --gold-soft: #f3ead6; --ok: #1d6a4d; --stop: #a1271e; color-scheme: light; }}
   body {{ font-size: 10.5pt; }}
+  * {{ -webkit-print-color-adjust: exact; print-color-adjust: exact; }}
   .top .nav, .skip, .tools, .areas, .copy, .hint, .dl-grid, .hero .btns, .anatomy, .steps-sec {{ display: none !important; }}
   .hero-grid, .layout {{ display: block; }}
   section {{ padding-block: 14pt; }}

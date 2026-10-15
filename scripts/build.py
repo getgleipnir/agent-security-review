@@ -15,6 +15,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from kitpage import render_site  # noqa: E402
+from scannerpage import render_scanner  # noqa: E402
 from validate import ROOT, check, load_checklist  # noqa: E402
 
 GENERATED_NOTE = "<!-- Generated from checklist.yaml by scripts/build.py. Do not edit by hand. -->"
@@ -289,6 +290,7 @@ def outputs(data: dict) -> dict[Path, str]:
         ROOT / "answers-template.json": render_answers_json(data),
         ROOT / "answers-template.csv": render_answers_csv(data),
         ROOT / "site" / "index.html": render_site(data),
+        ROOT / "site" / "scanner" / "index.html": render_scanner(data),
     }
     # The site serves its own copies so it works without GitHub.
     for name in ("checklist.md", "answers-template.json", "answers-template.csv"):

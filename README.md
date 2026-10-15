@@ -30,6 +30,15 @@ Free, vendor-neutral, no signup. Content under CC BY 4.0.
 
 `status` takes one of: `evidenced` (you can show it today), `partial`, `policy_only` (a statement, no proof), `missing`, `not_applicable`.
 
+## Agent Readiness Scanner
+
+[`site/scanner/`](site/scanner/index.html) is a Lighthouse-style self-check built on the same questions. Answer 15 core questions (or import your filled-in answer sheet to score all 33) and get an overall score, a score per area, and the gaps that will stall a review, most serious first, each linked to its answer guide in the kit.
+
+- Runs entirely in the browser. No backend, no storage, and its Content Security Policy blocks network requests.
+- The share link keeps the answers in the URL fragment (`#r=...`), which browsers never send to a server.
+- Save the report as PDF from the page, or download the answers as JSON or CSV to keep working in the kit.
+- Scoring is shown on the page: yes with evidence 100, partly 50, policy only 25, no 0, "doesn't apply" left out; areas and the total are plain averages. It is a self-assessment, not an audit.
+
 ## What's covered
 
 33 questions in 10 areas:

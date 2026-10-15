@@ -185,6 +185,12 @@ items:
       gateway] that checks [allowlist, parameter limits, scoped credential] before execution; calls outside scope
       are [blocked and logged / describe what happens]. We test this in [CI suite / quarterly test], last run
       [date], results attached. Each action record stores [the scope that applied] (sample attached).
+    scanner:
+      check: >-
+        Are your agent's tool permissions enforced in code at the moment of each call, not only in the prompt?
+      gap: >-
+        Without a hard limit at the tool layer, a confused or manipulated agent can take actions you never intended,
+        and a reviewer has nothing to test.
     often_unevidenced: false
     capabilities: [scope_record, action_record]
     references:
@@ -229,6 +235,13 @@ items:
       version, credential ID (never the secret), scope, initiating user / case / ticket ID]. Credentials are held in
       [vault / KMS] and [injected per call so the model never sees them / describe how exposure is limited]. A
       sample record joined to your system log is attached.
+    scanner:
+      check: >-
+        Does each agent deployment act under its own identity, recorded on every action with agent version,
+        credential and scope?
+      gap: >-
+        If the agent shares an account with staff, nobody can tell from the buyer's logs whether a person or the
+        agent made a change.
     often_unevidenced: true
     capabilities: [identity_binding, action_record]
     references:
@@ -305,6 +318,13 @@ items:
       tool name and arguments (with [fields] redacted), the target system's response, timestamps and trace ID. We
       can export the full record for any action or case within [time]. A redacted example for one real case is
       attached.
+    scanner:
+      check: >-
+        For any single action, can you produce the full record (trigger, inputs, tool call, arguments, system
+        response) within minutes?
+      gap: >-
+        Reviewers pick one case and ask you to walk through it. If that takes days of digging, they assume the
+        record doesn't exist.
     often_unevidenced: true
     capabilities: [action_record]
     references:
@@ -340,6 +360,11 @@ items:
       Each action record stores model provider, model name and pinned version, e.g. [example]. We keep a model
       inventory including retired versions and their active dates ([link / attachment]), so any past action can be
       matched to the model that handled it.
+    scanner:
+      check: >-
+        Is the exact model and version stored on every action, including versions you have since retired?
+      gap: >-
+        When a past decision is challenged, you can't say which model made it, so you can't explain or defend it.
     often_unevidenced: true
     capabilities: [model_version, action_record]
     references:
@@ -503,6 +528,12 @@ items:
       Each action record stores both what the agent reported and the response from [target system] (status, object
       ID, returned values). For [high-impact actions, e.g. refunds] we also read the object back from [system] and
       record match or mismatch. The mismatch rate for [period] was [x] ([report attached]).
+    scanner:
+      check: >-
+        Do you record what actually happened in the target system next to what the agent said it did?
+      gap: >-
+        The agent's own "done" is not proof. Without the system's response, a failed or wrong action looks the same
+        as a successful one.
     often_unevidenced: true
     capabilities: [outcome_check, action_record]
     references:
@@ -570,6 +601,13 @@ items:
       agent / describe]. Every [period] we commit a digest of the latest records [to an external log / to you], so
       [truncation is also detectable / describe]. Clocks are synchronized via [time source]. Key management is
       documented in [document].
+    scanner:
+      check: >-
+        Would an edit, deletion or truncation of your agent records be detectable, through a mechanism like hash
+        chains and signatures?
+      gap: >-
+        Saying "our logs are immutable" is a claim. Without a mechanism, a reviewer has no reason to believe records
+        weren't changed after the fact.
     often_unevidenced: true
     capabilities: [signed_records, hash_chain]
     references:
@@ -608,6 +646,12 @@ items:
       describe current process] using our published public key [key ID]. Segment digests are anchored in [external
       log / your storage], so [what a rewrite of history would show, and to whom]. A sample bundle, the verification
       steps and a tampered example that fails are attached.
+    scanner:
+      check: >-
+        Can the buyer, their auditor or a regulator verify your records themselves, without access to your systems?
+      gap: >-
+        Records only you can check are self-reported. The buyer has to take your word for them, which is exactly
+        what reviews try to avoid.
     often_unevidenced: true
     capabilities: [external_anchor, offline_verifier]
     references:
@@ -666,6 +710,13 @@ items:
       scope, inputs and system responses]. [Mechanism, e.g. a hash chain plus externally committed digests] shows
       the exported sequence has not been altered or cut short. In our last tabletop on [date], a full reconstruction
       took [time].
+    scanner:
+      check: >-
+        Can you reconstruct, in order and without gaps, everything the agent did across the buyer's systems during
+        an incident window?
+      gap: >-
+        Incident reports and regulator notifications depend on a complete timeline. Gaps turn an incident into an
+        audit finding.
     often_unevidenced: true
     capabilities: [action_record, hash_chain, pack]
     references:
@@ -738,6 +789,13 @@ items:
       You can stop the agent yourself via [console button / API / revoking credential], taking effect within [time]
       (tested [date]). Model, prompt and configuration versions are pinned, and we can roll back to [previous
       version] within [time]. Results of the last stop and rollback test are attached.
+    scanner:
+      check: >-
+        Can the buyer stop the agent themselves (a kill switch), with a tested time to take effect, and can you roll
+        back to a previous version?
+      gap: >-
+        When something goes wrong, the first question is how fast it can be stopped. "Contact support" is not an
+        answer a bank accepts.
     often_unevidenced: false
     capabilities: []
     references:
@@ -770,6 +828,13 @@ items:
       We log [event types: actions, tool calls, outcomes, reviews, config changes]. Retention: [period per type].
       Access: [roles]. You can receive records via [API / scheduled delivery / your SIEM or object storage] in
       [format]. A sample export is attached.
+    scanner:
+      check: >-
+        Do you log agent-level events (not just infrastructure), with a retention period per log type and an export
+        to the buyer's SIEM?
+      gap: >-
+        Short default retention and infrastructure-only logs are common findings, and they leave the buyer unable to
+        monitor the agent.
     often_unevidenced: false
     capabilities: [retention_policy, export]
     references:
@@ -801,6 +866,12 @@ items:
       Records are delivered [continuously / every period] to [your bucket / SIEM / storage], which you control. The
       format is documented ([link]) and each copy can be verified on its own, without access to our systems. You set
       retention there to match your rules.
+    scanner:
+      check: >-
+        Can the buyer hold their own copy of the agent's records for as long as their rules require?
+      gap: >-
+        Many buyers must keep logs for months or years under their own control. A copy that only lives with you
+        doesn't cover that.
     often_unevidenced: true
     capabilities: [buyer_copy, retention_policy]
     references:
@@ -912,6 +983,12 @@ items:
       Prompts, tool definitions and configs are versioned in [repository]. Every change runs [evaluation suite] and
       needs approval from [role] before release. The active version is stored on each action record. Change history
       for your deployment is available at [link].
+    scanner:
+      check: >-
+        Are prompts, tools and model changes versioned, tested and approved before they reach the buyer's traffic?
+      gap: >-
+        For agents, a prompt edit is a code change. Without change control, behaviour can shift under the buyer
+        without anyone noticing.
     often_unevidenced: false
     capabilities: [config_version]
     references:
@@ -1005,6 +1082,12 @@ items:
       [providers], per [contract clause / provider terms]. Retention: prompts [period], uploads [period], outputs
       [period]; [zero-retention terms with providers where available]. Deletion follows [procedure], and we [confirm
       it in writing on request].
+    scanner:
+      check: >-
+        Is it in writing that buyer data is not used for training, by you or your model providers, with retention
+        and deletion terms?
+      gap: >-
+        This is the first AI question in almost every questionnaire. A privacy-policy link usually isn't enough.
     often_unevidenced: false
     capabilities: []
     references:
@@ -1071,6 +1154,13 @@ items:
       you in [place]. For each action the record shows whether review applied, who reviewed, the decision, and the
       time of review relative to execution. Actions that should have been reviewed but were not appear in
       [exceptions report].
+    scanner:
+      check: >-
+        Where the buyer requires human review, can you show per action who reviewed it, the decision, and that it
+        came before execution?
+      gap: >-
+        The buyer chooses its oversight rules. Without per-action proof, you can't show those rules were actually
+        followed.
     often_unevidenced: true
     capabilities: [review_record, action_record]
     references:
@@ -1131,6 +1221,12 @@ items:
       Sub-processors involved in the agent: [provider, purpose, region, retention, training terms] for each of
       model, speech-to-text, text-to-speech and tools. The full list is at [link]. We notify you [N days] before
       adding or changing one.
+    scanner:
+      check: >-
+        Do you publish a complete list of model, voice and tool providers, with their retention and training terms?
+      gap: >-
+        Every provider is another place customer data goes. Missing or incomplete lists stall third-party risk
+        review.
     often_unevidenced: false
     capabilities: []
     references:
