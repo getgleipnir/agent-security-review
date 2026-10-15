@@ -10,13 +10,14 @@ Thanks for helping. The checklist is only as good as the questions real reviewer
 
 ## Editing the checklist
 
-`checklist.yaml` is the source of truth. `checklist.md`, `checklist.csv` and `mappings/*.md` are generated.
+`checklist.yaml` is the source of truth. `checklist.md`, `checklist.csv`, `answers-template.*`, `mappings/*.md` and `site/` are generated.
 
 ```bash
 pip install pyyaml jsonschema
 # edit checklist.yaml
-python scripts/build.py          # validates, then regenerates md, csv and mappings
+python scripts/build.py          # validates, then regenerates md, csv, templates, mappings and site
 python scripts/build.py --check  # what CI runs
+python scripts/build_pdf.py      # optional: refresh the PDF (needs Playwright + Chromium)
 ```
 
 Rules:
@@ -29,6 +30,7 @@ Rules:
 - **Paraphrase, don't copy.** Notes are short summaries in your own words, max 160 characters. Many frameworks are copyrighted.
 - **Stay vendor-neutral.** Evidence descriptions must be achievable with any tooling. Don't name products in items.
 - **Questions are phrased the way buyers ask them**, not the way vendors would like to be asked.
+- **Template answers must not overclaim.** Put every fact the vendor has to supply in `[square brackets]`, so nobody can submit the template unchanged by accident.
 
 ## Pull requests
 
