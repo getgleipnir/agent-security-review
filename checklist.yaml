@@ -23,7 +23,7 @@ groups:
     title: Tamper evidence
     summary: Whether records can be changed after the fact without anyone noticing, and who can check.
   - id: INC
-    title: Incident reconstruction
+    title: Incidents & kill switch
     summary: Detecting, reporting, stopping and reconstructing what went wrong.
   - id: RET
     title: Retention

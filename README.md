@@ -101,7 +101,7 @@ Questions you were actually asked in a review are the most valuable contribution
 
 ## License
 
-Content (questions, answers, mappings, examples, the page) is licensed under [CC BY 4.0](LICENSE). Scripts and JSON schemas are under the [MIT License](LICENSE-CODE). Public Sans is under the [SIL Open Font License](site/fonts/OFL.txt).
+Content (questions, answers, mappings, examples, the page) is licensed under [CC BY 4.0](LICENSE). Scripts and JSON schemas are under the [MIT License](LICENSE-CODE). Newsreader and Schibsted Grotesk are under the [SIL Open Font License](site/assets/fonts/OFL.txt).
 
 ---
 

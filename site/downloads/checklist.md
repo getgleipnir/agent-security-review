@@ -21,7 +21,7 @@ How to read each item:
 - [ACT · Action records](#act--action-records) (7)
 - [OUT · Outcome verification](#out--outcome-verification) (2)
 - [TMP · Tamper evidence](#tmp--tamper-evidence) (3)
-- [INC · Incident reconstruction](#inc--incident-reconstruction) (3)
+- [INC · Incidents & kill switch](#inc--incidents--kill-switch) (3)
 - [RET · Retention](#ret--retention) (4)
 - [CHG · Model & prompt changes](#chg--model--prompt-changes) (4)
 - [DAT · Data handling](#dat--data-handling) (2)
@@ -561,7 +561,7 @@ Whether records can be changed after the fact without anyone noticing, and who c
 - AIUC-1 [E015.3](https://standard.aiuc-1.com/accountability/log-model-activity): Log storage with access controls, retention and sanitation *(verified)*
 - SOC 2 TSC CC6.3: Access granted by role, with least privilege and segregation of duties *(verified)*
 
-## INC · Incident reconstruction
+## INC · Incidents & kill switch
 
 Detecting, reporting, stopping and reconstructing what went wrong.
 

@@ -28,6 +28,39 @@ def blanks(text: str) -> str:
     return re.sub(r"\[([^\]]+)\]", r'<span class="blank">\1</span>', esc(text))
 
 
+BRAND_SVG = ('<svg viewBox="0 0 34 30" aria-hidden="true"><g fill="none" stroke="#C9A45C" stroke-linecap="round">'
+             '<path d="M3 23 C 9 5, 16 30, 21 13 S 31 8, 31 8" stroke-width="3"/>'
+             '<path d="M3 27 C 9 11, 16 34, 21 18 S 31 13, 31 13" stroke-opacity=".5" stroke-width="1.8"/></g></svg>')
+
+
+def header(active: str, prefix: str = "") -> str:
+    """Site header shared by the Kit and the Scanner. prefix is the path back to site/."""
+    def link(href: str, label: str, key: str) -> str:
+        cur = ' aria-current="page"' if key == active else ""
+        return f'<a href="{href}"{cur}>{label}</a>'
+    return f"""<a class="skip" href="#main">Skip to content</a>
+<header class="wrap top">
+  <a class="brand" href="https://getgleipnir.com" aria-label="Gleipnir home">{BRAND_SVG}GLEIPNIR</a>
+  <nav class="nav" aria-label="Main">
+    {link(prefix + "index.html", "Review Kit", "kit")}
+    {link(prefix + "scanner/index.html", "Readiness Scanner", "scanner")}
+    <a href="https://github.com/getgleipnir/agent-security-review">GitHub</a>
+    <a class="cta" href="{prefix}index.html#downloads">Get the sheet</a>
+  </nav>
+</header>"""
+
+
+def footer() -> str:
+    return """<footer class="wrap foot">
+  <span>Free under CC BY 4.0. Not legal advice; does not certify compliance with anything.</span>
+  <nav aria-label="More">
+    <a href="https://github.com/getgleipnir/agent-security-review">Source</a>
+    <a href="https://github.com/getgleipnir/agent-security-review/issues/new?template=add-question.yml">Suggest a question</a>
+    <a href="https://getgleipnir.com">getgleipnir.com</a>
+  </nav>
+</footer>"""
+
+
 def render_item(item: dict, fws: dict) -> str:
     iid = item["id"]
     hard = item["often_unevidenced"]
@@ -37,31 +70,34 @@ def render_item(item: dict, fws: dict) -> str:
         ref = esc(r["ref"])
         if r.get("url"):
             ref = f'<a href="{esc(r["url"])}" rel="noopener">{ref}</a>'
-        refs.append(f'<li><span class="fw">{esc(fw["short"])}</span> {ref}: {esc(r["note"])} '
-                    f'<span class="conf">({CONF[r["confidence"]]})</span></li>')
+        refs.append(f'<li><b>{esc(fw["short"])}</b> {ref}: {esc(r["note"])} '
+                    f'<span class="conf">{CONF[r["confidence"]]}</span></li>')
     evidence = "".join(f"<li>{esc(e)}</li>" for e in item["evidence"])
     not_enough = "".join(f"<li>{esc(e)}</li>" for e in item["not_enough"])
-    note = f'<p class="note">{esc(item["note"])}</p>' if item.get("note") else ""
+    note = f'<dt>Note</dt><dd class="muted">{esc(item["note"])}</dd>' if item.get("note") else ""
     search = " ".join([iid, item["question"], item["why"], item["strong_answer"], item["template_answer"],
                        *item["evidence"], *item["not_enough"],
                        *(f'{fws[r["fw"]]["short"]} {r["ref"]} {r["note"]}' for r in item["references"])]).lower()
-    flag = '<span class="flag">Hard to evidence today</span>' if hard else ""
+    flag = '<span class="pill stop">Hard to evidence</span>' if hard else ""
+    weak = f'<dt>Not enough on its own</dt><dd><ul class="weak">{not_enough}</ul></dd>' if not_enough else ""
     return f"""
 <details class="item" id="{iid.lower()}" data-hard="{str(hard).lower()}" data-search="{esc(search)}">
   <summary><span class="iid">{iid}</span><span class="q">{esc(item["question"])}</span>{flag}</summary>
-  <div class="body">
-    <section><h4>Why buyers ask</h4><p>{esc(item["why"])}</p></section>
-    <section class="strong"><h4>What a strong answer looks like</h4><p>{esc(item["strong_answer"])}</p></section>
-    <section><h4>Evidence to attach</h4><ul>{evidence}</ul></section>
-    {f'<section class="weak"><h4>Not enough on its own</h4><ul>{not_enough}</ul></section>' if not_enough else ""}
-    <section class="template"><h4>Template answer</h4>
-      <p class="hint">Fill every blank with what your system actually does. If a sentence isn't true for you, delete it and say what you do instead.</p>
+  <dl class="rec body">
+    <dt>Why buyers ask</dt><dd>{esc(item["why"])}</dd>
+    <dt>Strong answer</dt><dd class="strong">{esc(item["strong_answer"])}</dd>
+    <dt>Evidence to attach</dt><dd><ul>{evidence}</ul></dd>
+    {weak}
+    <dt>Template answer</dt>
+    <dd class="template">
       <p class="form" data-raw="{esc(item["template_answer"])}">{blanks(item["template_answer"])}</p>
-      <button type="button" class="copy">Copy template</button>
-    </section>
+      <div class="tpl-foot"><button type="button" class="btn small copy">Copy template</button>
+      <span class="hint">Fill every blank with what your system really does. Delete anything that isn't true.</span></div>
+    </dd>
     {note}
-    <details class="refs"><summary>Framework references ({len(item["references"])})</summary><ul>{"".join(refs)}</ul></details>
-  </div>
+    <dt>Frameworks</dt>
+    <dd><details class="refs"><summary>{len(item["references"])} references</summary><ul>{"".join(refs)}</ul></details></dd>
+  </dl>
 </details>"""
 
 
@@ -71,20 +107,21 @@ def render_site(data: dict) -> str:
     for g in data["groups"]:
         items = [i for i in data["items"] if i["group"] == g["id"] and not i.get("deprecated")]
         gid = g["id"].lower()
-        nav.append(f'<li><a href="#g-{gid}">{esc(g["title"])} <span class="n">{len(items)}</span></a></li>')
+        nav.append(f'<li><a href="#g-{gid}">{esc(g["title"])}<span class="n">{len(items)}</span></a></li>')
         groups.append(f"""
-<section class="group" id="g-{gid}">
-  <h2>{esc(g["title"])}</h2>
+<div class="group" id="g-{gid}">
+  <h3>{esc(g["title"])}</h3>
   <p class="gsum">{esc(g["summary"])}</p>
   {"".join(render_item(i, fws) for i in items)}
-</section>""")
-    n_items = sum(1 for i in data["items"] if not i.get("deprecated"))
+</div>""")
+    live = [i for i in data["items"] if not i.get("deprecated")]
     fw_list = "".join(
-        f'<li><a href="{esc(f["url"])}" rel="noopener">{esc(f["name"])}</a> <span class="conf">{esc(f["version"])}</span></li>'
+        f'<li><a href="{esc(f["url"])}" rel="noopener">{esc(f["name"])}</a><span class="conf">{esc(f["version"])}</span></li>'
         for f in fws.values())
     return TEMPLATE.format(
-        version=esc(data["version"]), updated=esc(data["updated"]), n_items=n_items, n_groups=len(data["groups"]),
-        n_fw=len(fws), nav="".join(nav), groups="".join(groups), fw_list=fw_list,
+        version=esc(data["version"]), updated=esc(data["updated"]), n_items=len(live), n_groups=len(data["groups"]),
+        n_fw=len(fws), n_hard=sum(1 for i in live if i["often_unevidenced"]), nav="".join(nav),
+        groups="".join(groups), fw_list=fw_list, header=header("kit"), footer=footer(),
     )
 
 
@@ -96,173 +133,193 @@ TEMPLATE = """<!doctype html>
 <title>Agent Security Review Kit</title>
 <meta name="description" content="The questions banks, insurers and enterprise security teams ask AI agent vendors before production, with what a strong answer looks like, what evidence to attach and a template answer.">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'none'; base-uri 'none'; form-action 'none'">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/brand.css">
 <style>
-@font-face {{ font-family: "Public Sans"; src: url("fonts/public-sans-latin-wght-normal.woff2") format("woff2");
-  font-weight: 100 900; font-display: swap; }}
-:root {{
-  --paper: #eef1f4; --surface: #ffffff; --ink: #14213d; --muted: #4d5b70; --rule: #c9d2dc;
-  --accent: #0f6e6a; --accent-soft: #e1f0ee; --caution: #8a5100; --caution-soft: #fbf0df; --blank: #dfe6ee;
-  color-scheme: light;
-}}
-@media (prefers-color-scheme: dark) {{
-  :root:not([data-theme="light"]) {{
-    --paper: #0e1622; --surface: #152031; --ink: #e6ecf2; --muted: #a3b0c2; --rule: #2a3a50;
-    --accent: #5cc4bb; --accent-soft: #15322f; --caution: #e3a852; --caution-soft: #34270f; --blank: #233348;
-    color-scheme: dark;
-  }}
-}}
-:root[data-theme="dark"] {{
-  --paper: #0e1622; --surface: #152031; --ink: #e6ecf2; --muted: #a3b0c2; --rule: #2a3a50;
-  --accent: #5cc4bb; --accent-soft: #15322f; --caution: #e3a852; --caution-soft: #34270f; --blank: #233348;
-  color-scheme: dark;
-}}
-* {{ box-sizing: border-box; }}
-html {{ -webkit-text-size-adjust: 100%; }}
-body {{ margin: 0; background: var(--paper); color: var(--ink);
-  font: 400 17px/1.55 "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif; }}
-a {{ color: var(--accent); text-underline-offset: 2px; }}
-:focus-visible {{ outline: 3px solid var(--accent); outline-offset: 2px; border-radius: 3px; }}
-.wrap {{ max-width: 1120px; margin: 0 auto; padding: 0 16px; }}
-header.top {{ padding: 56px 0 32px; }}
-h1 {{ font-size: clamp(34px, 6vw, 56px); line-height: 1.05; font-weight: 750; letter-spacing: -0.02em; margin: 0 0 16px;
-  max-width: 14ch; }}
-.lede {{ font-size: 20px; line-height: 1.5; color: var(--muted); max-width: 62ch; margin: 0 0 28px; }}
-.downloads {{ display: flex; flex-wrap: wrap; gap: 10px; margin: 0 0 12px; padding: 0; list-style: none; }}
-.downloads a {{ display: inline-block; padding: 10px 16px; border: 1.5px solid var(--ink); border-radius: 6px;
-  color: var(--ink); text-decoration: none; font-weight: 600; font-size: 15px; background: var(--surface); }}
-.downloads a.primary {{ background: var(--ink); color: var(--paper); }}
-.downloads a:hover {{ border-color: var(--accent); }}
-.meta {{ font-size: 14px; color: var(--muted); margin: 0; }}
-.how {{ display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin: 8px 0 40px; padding: 24px 0;
-  border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); counter-reset: step; list-style: none; }}
-.how li {{ counter-increment: step; font-size: 15px; color: var(--muted); }}
-.how li::before {{ content: counter(step); display: block; font-weight: 750; font-size: 22px; color: var(--accent); }}
-.how strong {{ color: var(--ink); display: block; font-size: 16px; }}
-.layout {{ display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 48px; align-items: start; }}
-nav.groups {{ position: sticky; top: 16px; font-size: 15px; }}
-nav.groups ul {{ list-style: none; margin: 0; padding: 0; }}
-nav.groups a {{ display: flex; justify-content: space-between; gap: 8px; padding: 6px 0; color: var(--ink);
-  text-decoration: none; border-bottom: 1px solid var(--rule); }}
-nav.groups a:hover {{ color: var(--accent); }}
-nav.groups .n {{ color: var(--muted); font-variant-numeric: tabular-nums; }}
-.tools {{ display: flex; flex-wrap: wrap; gap: 12px 20px; align-items: center; margin: 0 0 24px; }}
-.tools input[type=search] {{ flex: 1 1 260px; font: inherit; font-size: 16px; padding: 10px 12px; color: var(--ink);
-  background: var(--surface); border: 1.5px solid var(--rule); border-radius: 6px; }}
-.tools label {{ font-size: 15px; display: flex; gap: 8px; align-items: center; cursor: pointer; }}
-.tools button, .copy {{ font: inherit; font-size: 14px; font-weight: 600; padding: 7px 12px; border-radius: 6px;
-  border: 1.5px solid var(--rule); background: var(--surface); color: var(--ink); cursor: pointer; }}
-.tools button:hover, .copy:hover {{ border-color: var(--accent); }}
-#count {{ font-size: 14px; color: var(--muted); }}
-.group {{ margin: 0 0 48px; }}
-.group h2 {{ font-size: 26px; line-height: 1.2; font-weight: 700; margin: 0 0 4px; letter-spacing: -0.01em; }}
-.gsum {{ color: var(--muted); margin: 0 0 16px; max-width: 66ch; }}
-details.item {{ background: var(--surface); border: 1px solid var(--rule); border-radius: 8px; margin: 0 0 10px; }}
-details.item > summary {{ list-style: none; cursor: pointer; display: grid; grid-template-columns: 76px 1fr;
-  gap: 4px 12px; padding: 16px 18px; }}
+.anatomy .rec {{ font-size: 0.92rem; }}
+.anatomy .rec dt {{ font-family: var(--mono); font-size: 0.84rem; padding-top: 2px; }}
+.anatomy .q-big {{ font-family: var(--serif); font-size: 1.35rem; line-height: 1.3; margin-bottom: 16px; }}
+.counts {{ display: flex; flex-wrap: wrap; gap: 8px 22px; font-size: 0.95rem; color: var(--soft); }}
+.counts b {{ font-family: var(--serif); font-weight: 400; font-size: 1.6rem; color: var(--gold); margin-right: 6px; }}
+.head2 {{ display: flex; flex-direction: column; gap: 14px; margin-bottom: 36px; max-width: 46em; }}
+.head2 p {{ color: var(--soft); }}
+.dl-grid {{ display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin-top: 8px; }}
+.dl {{ display: flex; flex-direction: column; gap: 6px; padding: 18px; border: 1px solid var(--line); border-radius: 12px;
+  background: var(--bg-2); text-decoration: none; }}
+.dl:hover {{ border-color: var(--gold); color: var(--text); }}
+.dl b {{ font-weight: 600; }}
+.dl span {{ font-size: 0.9rem; color: var(--muted); }}
+.dl em {{ font-style: normal; font-family: var(--mono); font-size: 0.8rem; color: var(--gold); }}
+.layout {{ display: grid; grid-template-columns: 230px minmax(0, 1fr); gap: 48px; align-items: start; }}
+.areas {{ position: sticky; top: 16px; font-size: 0.95rem; }}
+.areas ul {{ list-style: none; padding: 0; }}
+.areas a {{ display: flex; justify-content: space-between; gap: 8px; padding: 7px 0; text-decoration: none;
+  color: var(--soft); border-bottom: 1px solid var(--line); }}
+.areas a:hover {{ color: var(--gold-lit); }}
+.areas .n {{ color: var(--muted); font-variant-numeric: tabular-nums; }}
+.tools {{ display: flex; flex-wrap: wrap; gap: 12px 18px; align-items: center; margin-bottom: 28px; }}
+.tools input[type=search] {{ flex: 1 1 260px; font: inherit; padding: 11px 14px; color: var(--text); background: var(--bg-2);
+  border: 1px solid var(--line); border-radius: 7px; }}
+.tools input[type=search]::placeholder {{ color: var(--muted); }}
+.tools input[type=search]:focus {{ border-color: var(--gold); outline: none; }}
+.tools label {{ display: flex; gap: 8px; align-items: center; font-size: 0.95rem; color: var(--soft); cursor: pointer; }}
+.tools input[type=checkbox] {{ accent-color: var(--gold); width: 16px; height: 16px; }}
+#count {{ font-size: 0.9rem; color: var(--muted); }}
+.group {{ margin-bottom: 44px; }}
+.group h3 {{ font-family: var(--serif); font-weight: 400; font-size: 1.7rem; line-height: 1.2; }}
+.gsum {{ color: var(--muted); margin: 4px 0 16px; max-width: 40em; }}
+details.item {{ background: var(--bg-2); border: 1px solid var(--line); border-radius: 12px; margin-bottom: 10px; }}
+details.item[open] {{ border-color: #4a4434; }}
+details.item > summary {{ list-style: none; cursor: pointer; display: grid; grid-template-columns: 70px minmax(0, 1fr) auto;
+  gap: 4px 14px; align-items: baseline; padding: 16px 20px; }}
 details.item > summary::-webkit-details-marker {{ display: none; }}
-.iid {{ font-weight: 700; font-size: 14px; color: var(--accent); padding-top: 3px; font-variant-numeric: tabular-nums;
-  letter-spacing: 0.02em; }}
-.q {{ font-weight: 600; font-size: 18px; line-height: 1.4; }}
-.flag {{ grid-column: 2; justify-self: start; font-size: 13px; font-weight: 600; color: var(--caution);
-  background: var(--caution-soft); padding: 2px 8px; border-radius: 4px; }}
-details.item[open] > summary {{ border-bottom: 1px solid var(--rule); }}
-.body {{ padding: 4px 18px 18px 106px; }}
-.body section {{ margin: 16px 0 0; max-width: 68ch; }}
-.body h4 {{ font-size: 14px; font-weight: 700; margin: 0 0 4px; color: var(--muted); }}
-.body p {{ margin: 0; }}
-.body ul {{ margin: 0; padding-left: 20px; }}
+details.item > summary:hover .q {{ color: var(--gold-lit); }}
+.iid {{ font-family: var(--mono); font-size: 0.85rem; color: var(--gold); }}
+.q {{ font-size: 1.05rem; font-weight: 500; line-height: 1.45; }}
+details.item[open] > summary {{ border-bottom: 1px solid var(--line); }}
+.body {{ padding: 20px 20px 22px; font-size: 0.98rem; }}
+.body dt {{ font-size: 0.88rem; }}
+.body ul {{ margin: 0; padding-left: 18px; }}
 .body li {{ margin: 2px 0; }}
-.body a, footer a {{ overflow-wrap: anywhere; }}
-.strong p {{ border-left: 3px solid var(--accent); padding-left: 12px; }}
-.weak li::marker {{ color: var(--caution); }}
-.template .form {{ background: var(--paper); border: 1px dashed var(--rule); border-radius: 6px; padding: 14px 16px;
-  line-height: 1.9; }}
-.blank {{ background: var(--blank); border-bottom: 1.5px solid var(--muted); padding: 1px 5px; border-radius: 2px;
-  color: var(--muted); font-size: 0.92em;
-  -webkit-box-decoration-break: clone; box-decoration-break: clone; }}
-.copy {{ margin-top: 8px; }}
-.hint {{ font-size: 14px; color: var(--muted); margin: 0 0 8px !important; }}
-.note {{ font-size: 15px; color: var(--muted); margin-top: 16px !important; }}
-details.refs {{ margin-top: 16px; font-size: 14px; }}
-details.refs summary {{ cursor: pointer; color: var(--muted); font-weight: 600; }}
-details.refs ul {{ margin-top: 8px; }}
-.fw {{ font-weight: 600; }}
-.conf {{ color: var(--muted); }}
-footer {{ border-top: 1px solid var(--rule); padding: 32px 0 56px; margin-top: 24px; font-size: 15px; color: var(--muted); }}
-footer h2 {{ font-size: 18px; color: var(--ink); margin: 0 0 8px; }}
-footer ul {{ padding-left: 20px; margin: 0 0 20px; }}
-.hidden {{ display: none !important; }}
-@media (max-width: 860px) {{
+.body .strong {{ border-left: 2px solid var(--ok); padding-left: 12px; }}
+.weak li::marker {{ color: var(--stop); }}
+.template .form {{ background: var(--bg); border: 1px dashed var(--line); border-radius: 8px; padding: 14px 16px;
+  line-height: 1.85; }}
+.tpl-foot {{ display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; margin-top: 10px; }}
+.hint {{ font-size: 0.85rem; color: var(--muted); }}
+.muted {{ color: var(--muted); }}
+details.refs summary {{ cursor: pointer; color: var(--soft); }}
+details.refs ul {{ margin-top: 8px; font-size: 0.9rem; }}
+.conf {{ color: var(--muted); margin-left: 6px; font-size: 0.85em; }}
+.fws ul {{ columns: 2; column-gap: 40px; padding-left: 18px; color: var(--soft); font-size: 0.95rem; }}
+.fws li {{ break-inside: avoid; margin-bottom: 8px; }}
+.fws .conf {{ display: block; margin: 0; }}
+.fws p {{ color: var(--soft); max-width: 46em; margin-bottom: 24px; }}
+@media (max-width: 900px) {{
+  .dl-grid {{ grid-template-columns: repeat(2, minmax(0, 1fr)); }}
   .layout {{ grid-template-columns: minmax(0, 1fr); gap: 0; }}
-  nav.groups {{ position: static; margin: 0 0 20px; min-width: 0; }}
-  nav.groups ul {{ display: flex; gap: 8px; overflow-x: auto; padding-bottom: 6px; }}
-  nav.groups a {{ white-space: nowrap; border: 1px solid var(--rule); border-radius: 999px; padding: 6px 12px;
-    background: var(--surface); }}
-  .how {{ grid-template-columns: 1fr; gap: 16px; }}
-  details.item > summary {{ grid-template-columns: 1fr; padding: 14px; }}
-  .flag {{ grid-column: 1; }}
-  .body {{ padding: 4px 14px 16px; }}
+  .areas {{ position: static; min-width: 0; margin-bottom: 20px; }}
+  .areas ul {{ display: flex; gap: 8px; overflow-x: auto; padding-bottom: 6px; }}
+  .areas a {{ white-space: nowrap; border: 1px solid var(--line); border-radius: 999px; padding: 6px 12px; gap: 8px; }}
+  .fws ul {{ columns: 1; }}
+}}
+@media (max-width: 720px) {{
+  details.item > summary {{ grid-template-columns: minmax(0, 1fr); padding: 14px 16px; }}
+  details.item > summary .pill {{ justify-self: start; }}
+  .body {{ padding: 16px; }}
+  .dl-grid {{ grid-template-columns: minmax(0, 1fr); }}
 }}
 @media print {{
-  body {{ background: #fff; color: #000; font-size: 11pt; }}
-  .downloads, .tools, nav.groups, .copy, .how {{ display: none !important; }}
-  .layout {{ display: block; }}
-  header.top {{ padding: 0 0 12pt; }}
+  :root {{ --bg: #fff; --bg-2: #fff; --bg-3: #fff; --line: #c8c8c8; --text: #111; --soft: #222; --muted: #555;
+    --gold: #7a5a1c; --gold-lit: #7a5a1c; --gold-soft: #f3ead6; --ok: #1d6a4d; --stop: #a1271e; color-scheme: light; }}
+  body {{ font-size: 10.5pt; }}
+  .top .nav, .skip, .tools, .areas, .copy, .hint, .dl-grid, .hero .btns, .anatomy, .steps-sec {{ display: none !important; }}
+  .hero-grid, .layout {{ display: block; }}
+  section {{ padding-block: 14pt; }}
+  .hero {{ padding-top: 0; }}
   details.item {{ border-color: #bbb; }}
-  details.item > summary, .body section {{ break-inside: avoid; }}
-  details.item > summary {{ break-after: avoid; }}
-  .group h2 {{ break-after: avoid; }}
+  details.item > summary, .rec dt, .template .form {{ break-inside: avoid; }}
+  .screen-only {{ display: none !important; }}
+  .group h3 {{ break-after: avoid; }}
   .hidden {{ display: block !important; }}
+  details.item, details.item > * {{ display: block; }}
+  .rec {{ display: block; }}
+  .rec dt {{ margin-top: 8pt; break-after: avoid; }}
 }}
-@media (prefers-reduced-motion: reduce) {{ * {{ scroll-behavior: auto !important; }} }}
 </style>
 </head>
 <body>
-<div class="wrap">
-<header class="top">
-  <h1>Agent Security Review Kit</h1>
-  <p class="lede">The questions banks, insurers and enterprise security teams ask before an AI agent goes into production.
-  For each one: why they ask, what a strong answer looks like, what evidence to attach, and a template answer you can adapt.</p>
-  <ul class="downloads">
-    <li><a class="primary" href="downloads/answers-template.csv" download>Fill in (CSV)</a></li>
-    <li><a href="downloads/answers-template.json" download>Fill in (JSON)</a></li>
-    <li><a href="downloads/agent-security-review-kit.pdf" download>PDF</a></li>
-    <li><a href="downloads/checklist.md" download>Markdown</a></li>
-    <li><a href="https://github.com/getgleipnir/agent-security-review">Source on GitHub</a></li>
-  </ul>
-  <p class="meta">Version {version}, updated {updated}. {n_items} questions in {n_groups} areas, mapped to {n_fw} frameworks. Free to use under CC BY 4.0.</p>
-</header>
-
-<ol class="how">
-  <li><strong>Download the fill-in sheet</strong>Every question with an empty answer, status and evidence column.</li>
-  <li><strong>Answer with evidence</strong>Start from the template answer, replace each blank, attach the evidence listed.</li>
-  <li><strong>Fix the gaps first</strong>Questions marked hard to evidence are where reviews usually stall.</li>
-</ol>
-
-<div class="layout">
-<nav class="groups" aria-label="Areas"><ul>{nav}</ul></nav>
-<main>
-  <div class="tools" role="search">
-    <input type="search" id="q" placeholder="Search, e.g. kill switch or SOC 2" aria-label="Search questions">
-    <label><input type="checkbox" id="hard"> Hard to evidence only</label>
-    <button type="button" id="expand">Expand all</button>
-    <span id="count" aria-live="polite"></span>
+{header}
+<main id="main">
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <p class="eyebrow">Agent Security Review Kit</p>
+      <h1>Know the questions before the security review asks them.</h1>
+      <p class="lede">Banks, insurers and enterprise security teams ask AI agent vendors the same things before production.
+      Here they are, with why they ask, what a strong answer looks like, what evidence to attach, and a template answer to start from.</p>
+      <div class="btns">
+        <a class="btn primary" href="downloads/answers-template.csv" download>Download the answer sheet</a>
+        <a class="btn" href="#questions">Browse the questions</a>
+      </div>
+      <p class="counts"><span><b>{n_items}</b>questions</span><span><b>{n_groups}</b>areas</span><span><b>{n_fw}</b>frameworks cited</span><span><b>{n_hard}</b>hard to evidence</span></p>
+    </div>
+    <div class="card anatomy" aria-label="What each question contains">
+      <div class="card-top"><span>question ACC-02</span><span class="pill stop">hard to evidence</span></div>
+      <p class="q-big">Which identity performed each write in our systems?</p>
+      <dl class="rec">
+        <dt>why they ask</dt><dd>Shared accounts make the agent look like a staff member in the buyer's logs.</dd>
+        <dt>strong answer</dt><dd>One identity per deployment, recorded on every action.</dd>
+        <dt>evidence</dt><dd>A record joined to the buyer's own audit log.</dd>
+        <dt>template</dt><dd>Agent actions run under <span class="blank">identity</span>, which appears in your <span class="blank">system</span> audit logs.</dd>
+        <dt>frameworks</dt><dd>FINOS, AIUC-1, CSA AARM, NYDFS 500, SOC 2</dd>
+      </dl>
+      <p class="card-note">Every question in the kit has these parts.</p>
+    </div>
   </div>
-  {groups}
-</main>
-</div>
+</section>
 
-<footer>
-  <h2>How the references were checked</h2>
-  <p>Each framework reference is marked <em>verified</em> (checked against the primary text), <em>secondary source</em>
-  (primary is gated, checked against a reliable secondary source) or <em>title only</em>. Paraphrases are ours and short;
-  read the source before relying on one. This kit is not legal advice and does not certify compliance with anything.</p>
-  <h2>Frameworks</h2>
-  <ul>{fw_list}</ul>
-  <p>Maintained by <a href="https://getgleipnir.com">Gleipnir</a>. Suggest a question you were asked in a real review on
-  <a href="https://github.com/getgleipnir/agent-security-review/issues/new?template=add-question.yml">GitHub</a>.</p>
-</footer>
-</div>
+<section class="steps-sec">
+  <div class="wrap">
+    <ol class="steps">
+      <li><h3>Download the answer sheet</h3><p>Every question with empty columns for status, answer and evidence link.</p></li>
+      <li><h3>Answer with evidence</h3><p>Start from the template, fill each gold blank with what your system really does, attach the evidence listed.</p></li>
+      <li><h3>Close the gaps first</h3><p>The {n_hard} questions marked hard to evidence are where reviews usually stall. Fix or plan those before the call.</p></li>
+    </ol>
+  </div>
+</section>
+
+<section id="questions">
+  <div class="wrap">
+    <div class="head2">
+      <p class="eyebrow">The questions</p>
+      <h2>What buyers ask, and what a good answer contains.</h2>
+      <p class="screen-only">Open a question to see the full answer guide. Search finds words in the question, the answers and the framework references.</p>
+    </div>
+    <div class="layout">
+      <nav class="areas" aria-label="Areas"><ul>{nav}</ul></nav>
+      <div>
+        <div class="tools" role="search">
+          <input type="search" id="q" placeholder="Search, e.g. kill switch or SOC 2" aria-label="Search questions">
+          <label><input type="checkbox" id="hard"> Hard to evidence only</label>
+          <button type="button" class="btn small" id="expand">Expand all</button>
+          <span id="count" aria-live="polite"></span>
+        </div>
+        {groups}
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="downloads">
+  <div class="wrap">
+    <div class="head2">
+      <p class="eyebrow">Downloads</p>
+      <h2>Take it into your review.</h2>
+      <p>Version {version}, updated {updated}. Free to use and adapt under CC BY 4.0.</p>
+    </div>
+    <div class="dl-grid">
+      <a class="dl" href="downloads/answers-template.csv" download><em>CSV</em><b>Answer sheet</b><span>Status, answer and evidence link per question. Opens in Excel or Sheets.</span></a>
+      <a class="dl" href="downloads/answers-template.json" download><em>JSON</em><b>Answer file</b><span>Same sheet for tools. The Readiness Scanner reads it.</span></a>
+      <a class="dl" href="downloads/agent-security-review-kit.pdf" download><em>PDF</em><b>Full kit</b><span>Every question with its answer guide, to print or attach.</span></a>
+      <a class="dl" href="downloads/checklist.md" download><em>Markdown</em><b>Full kit</b><span>For your wiki, repo or questionnaire tool.</span></a>
+    </div>
+  </div>
+</section>
+
+<section class="fws">
+  <div class="wrap">
+    <div class="head2">
+      <p class="eyebrow">Sources</p>
+      <h2>Every reference, and how we checked it.</h2>
+    </div>
+    <p>Each reference is marked verified (checked against the primary text), secondary source (the primary is gated,
+    checked against a reliable secondary source) or title only. Paraphrases are ours and short; read the source before relying on one.</p>
+    <ul>{fw_list}</ul>
+  </div>
+</section>
+</main>
+{footer}
 <script>
 (function () {{
   var items = Array.prototype.slice.call(document.querySelectorAll("details.item"));
@@ -275,7 +332,7 @@ footer ul {{ padding-left: 20px; margin: 0 0 20px; }}
       el.classList.toggle("hidden", !ok);
       if (ok) shown++;
     }});
-    document.querySelectorAll("section.group").forEach(function (g) {{
+    document.querySelectorAll(".group").forEach(function (g) {{
       g.classList.toggle("hidden", !g.querySelector("details.item:not(.hidden)"));
     }});
     count.textContent = shown === items.length ? items.length + " questions" : shown + " of " + items.length;
@@ -290,14 +347,14 @@ footer ul {{ padding-left: 20px; margin: 0 0 20px; }}
   document.addEventListener("click", function (e) {{
     var b = e.target.closest(".copy");
     if (!b) return;
-    var text = b.parentNode.querySelector(".form").dataset.raw;
+    var box = b.closest(".template").querySelector(".form");
     var done = function () {{ b.textContent = "Copied"; setTimeout(function () {{ b.textContent = "Copy template"; }}, 1500); }};
     var fallback = function () {{
-      var r = document.createRange(); r.selectNodeContents(b.parentNode.querySelector(".form"));
+      var r = document.createRange(); r.selectNodeContents(box);
       var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
-      b.textContent = "Selected: press Ctrl+C or Cmd+C";
+      b.textContent = "Selected: press Ctrl+C";
     }};
-    if (navigator.clipboard && window.isSecureContext !== false) navigator.clipboard.writeText(text).then(done, fallback);
+    if (navigator.clipboard && window.isSecureContext !== false) navigator.clipboard.writeText(box.dataset.raw).then(done, fallback);
     else fallback();
   }});
   function openHash() {{
