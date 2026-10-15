@@ -6,7 +6,7 @@
 - Version used: Applies from 2025-01-17; RTS 2024/1773, 2024/1774, 2025/301, 2025/532
 - Type: Binding law or regulation
 - Access: public
-- Checked: 2026-10-14
+- Checked: 2026-10-15
 
 | Control | What it covers | Checklist items | How we checked |
 |---|---|---|---|

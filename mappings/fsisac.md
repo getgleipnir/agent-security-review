@@ -6,7 +6,7 @@
 - Version used: February 2024 (guide; question workbook not public)
 - Type: Industry framework
 - Access: public guide, workbook gated
-- Checked: 2026-10-14
+- Checked: 2026-10-15
 
 | Control | What it covers | Checklist items | How we checked |
 |---|---|---|---|

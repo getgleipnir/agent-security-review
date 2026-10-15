@@ -6,7 +6,7 @@
 - Version used: SIG 2026 (AI risk domain since SIG 2024; ISO 42001 mapping added in 2026)
 - Type: Industry framework
 - Access: licensed; question text not reviewed
-- Checked: 2026-10-14
+- Checked: 2026-10-15
 
 | Control | What it covers | Checklist items | How we checked |
 |---|---|---|---|

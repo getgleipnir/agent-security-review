@@ -2,7 +2,7 @@
 
 # AI Agent Security Review Checklist
 
-Version 0.1.1, updated 2026-10-14. 33 items in 10 groups.
+Version 0.2.0, updated 2026-10-15. 33 items in 10 groups.
 
 How to read each item:
 
@@ -61,6 +61,11 @@ What the agent can do in the buyer's systems, under which identity, and how that
 - ISO 42001 A.9.4: Intended use of the AI system *(secondary source)*
 - DORA [Art. 9(4)](https://www.digital-operational-resilience-act.com/Article_9.html): Least-privilege access and strong authentication *(verified)*
 - SIG AI domain: Domain-level only; question text not reviewed *(title only)*
+- AIUC-1 [B006](https://standard.aiuc-1.com/security/enforce-contextual-access-controls): Technical limits on agent actions to authorized scope, with alerting on boundary breaches *(verified)*
+- AIUC-1 [D003.1](https://standard.aiuc-1.com/reliability/restrict-unsafe-tool-calls): Tool call validation and authorization *(verified)*
+- AIUC-1 [A003](https://standard.aiuc-1.com/data-and-privacy/implement-contextual-data-safeguards): Limit agent data access by task, user role, agent role and context *(verified)*
+- CSA AARM [R1](https://arxiv.org/abs/2602.09433): Intercept actions before execution; denied actions must have no effect, no fail-open mode *(verified)*
+- CSA AARM [R9](https://arxiv.org/abs/2602.09433): Should scope credentials per action (just-in-time, operation-specific) *(verified)*
 
 ### ACC-02
 
@@ -89,6 +94,9 @@ What the agent can do in the buyer's systems, under which identity, and how that
 - CSA AICM LOG-12: Access control logs *(title only)*
 - NYDFS 500 [500.7(a)](https://www.law.cornell.edu/regulations/new-york/23-NYCRR-500.7): Access privileges and management *(verified)*
 - NYDFS 500 [500.11(b)(1)](https://www.law.cornell.edu/regulations/new-york/23-NYCRR-500.11): Third-party access control guidelines *(verified)*
+- AIUC-1 [A003.2](https://standard.aiuc-1.com/data-and-privacy/implement-contextual-data-safeguards): Agent identity management (supplemental) *(verified)*
+- AIUC-1 [E015.2](https://standard.aiuc-1.com/accountability/log-model-activity): Agent provenance metadata per execution, e.g. agent type and deployment origin (supplemental) *(verified)*
+- CSA AARM [R6](https://arxiv.org/abs/2602.09433): Bind each action to human principal, service identity, agent identity and privilege scope *(verified)*
 
 ### ACC-03
 
@@ -119,6 +127,9 @@ What the agent can do in the buyer's systems, under which identity, and how that
 - NIST AI 600-1 MS-2.7-007: Red-team for prompt injection and related attacks *(verified)*
 - NIST AI RMF MEASURE 2.7: Security and resilience evaluated and documented *(verified)*
 - EU AI Act [Art. 15(5)](https://artificialintelligenceact.eu/article/15/): Resilience against manipulation of inputs and outputs (high-risk) *(verified)*
+- AIUC-1 [B002](https://standard.aiuc-1.com/security/detect-adversarial-input): Detect and respond to adversarial inputs and prompt injection attempts *(verified)*
+- AIUC-1 [B005](https://standard.aiuc-1.com/security/implement-real-time-input-filtering): Filter inputs before they reach the model *(verified)*
+- CSA AARM [R3](https://arxiv.org/abs/2602.09433): Evaluate each action against static policy and alignment with the user's stated intent *(verified)*
 
 ## ACT · Action records
 
@@ -151,6 +162,10 @@ What is recorded for each agent action, and whether one action can be produced e
 - NYDFS 500 [500.6(a)(1)](https://www.law.cornell.edu/regulations/new-york/23-NYCRR-500.6): Systems able to reconstruct material financial transactions *(verified)*
 - NAIC AI Bulletin Sec. 3, 3.3(b)-(c): Model documentation, traceability and auditability *(verified)*
 - NYDFS CL7 ¶19: Be able to explain at all times how the AIS operates *(verified)*
+- AIUC-1 [E015](https://standard.aiuc-1.com/accountability/log-model-activity): Mandatory logging of AI system processes, actions and agent outputs for investigation and audit *(verified)*
+- AIUC-1 [E015.2](https://standard.aiuc-1.com/accountability/log-model-activity): Tool call parameters and results, sub-agent delegations, approvals and reasoning traces (supplemental) *(verified)*
+- AIUC-1 [D003.3](https://standard.aiuc-1.com/reliability/restrict-unsafe-tool-calls): Tool call log *(verified)*
+- CSA AARM [R5](https://arxiv.org/abs/2602.09433): Signed receipt per action with tool, parameters, context, identity, decision and outcome *(verified)*
 
 ### ACT-02
 
@@ -201,6 +216,7 @@ What is recorded for each agent action, and whether one action can be produced e
 - FINOS AIR [AIR-PREV-020](https://air-governance-framework.finos.org/mitigations/mi-20_mcp-server-security-governance.html): Log all MCP traffic *(verified)*
 - NYDFS AI Letter Monitoring: Monitor AI tool use for unusual query behaviour *(verified)*
 - DORA [Art. 30(2)(b)](https://www.digital-operational-resilience-act.com/Article_30.html): Contract specifies data processing locations and notice of changes *(verified)*
+- AIUC-1 [E009](https://standard.aiuc-1.com/accountability/monitor-3rd-party-access): Log third-party API connections, sessions and data access *(verified)*
 
 ### ACT-04
 
@@ -292,6 +308,7 @@ What is recorded for each agent action, and whether one action can be produced e
 
 - EU AI Act [Art. 50(1)](https://artificialintelligenceact.eu/article/50/): Inform people they are interacting with an AI system *(verified)*
 - CSA AICM LOG-11: Transaction/activity logging *(title only)*
+- AIUC-1 [E016](https://standard.aiuc-1.com/accountability/implement-ai-disclosure-mechanisms): Disclose AI interaction (text, voice) and when autonomous agents perform actions *(verified)*
 
 ## OUT · Outcome verification
 
@@ -323,6 +340,8 @@ Whether what the agent reports matches what actually happened in the system of r
 - EU AI Act [Art. 12(2)](https://artificialintelligenceact.eu/article/12/): Logs enable traceability and deployer monitoring *(verified)*
 - NAIC AI Bulletin Sec. 3, 3.4: Validate and retest outputs after implementation *(verified)*
 - NIST AI RMF MEASURE 2.4: Monitor behaviour in production *(verified)*
+- AIUC-1 [E015.2](https://standard.aiuc-1.com/accountability/log-model-activity): Tool call results logged alongside parameters (supplemental) *(verified)*
+- CSA AARM [R5](https://arxiv.org/abs/2602.09433): Receipt includes execution result and error details, not only the decision *(verified)*
 
 ### OUT-02
 
@@ -384,6 +403,9 @@ Whether records can be changed after the fact without anyone noticing, and who c
 - CSA AICM LOG-06: Clock synchronization *(title only)*
 - NIST AI 600-1 MS-2.8-003: Tamper-proof history of generated content (content provenance) with version control *(verified)*
 - NYDFS 500 [500.6(a)](https://www.law.cornell.edu/regulations/new-york/23-NYCRR-500.6): Securely maintain audit trail systems (no cryptographic requirement) *(verified)*
+- AIUC-1 [E015.4](https://standard.aiuc-1.com/accountability/log-model-activity): Tamper-evident logs; gaps, omissions and reordering detectable (supplemental) *(verified)*
+- CSA AARM [R5](https://arxiv.org/abs/2602.09433): Cryptographically signed receipts for all actions, over a canonical serialization *(verified)*
+- CSA AARM [R2](https://arxiv.org/abs/2602.09433): Should keep session context as an append-only, hash-chained log *(verified)*
 
 ### TMP-02
 
@@ -403,13 +425,15 @@ Whether records can be changed after the fact without anyone noticing, and who c
 - A screenshot or PDF export from the vendor's UI.
 - A SOC 2 report, which covers controls, not individual records.
 
-*Note: FINOS is the only framework found that states independent verifiability explicitly. Elsewhere it follows from audit and access rights.*
+*Note: FINOS, AIUC-1 (E015.4, supplemental) and CSA AARM (R5, offline-verifiable signatures) state independent verifiability explicitly. Elsewhere it follows from audit and access rights.*
 
 **References**
 
 - FINOS AIR [AIR-DET-021](https://air-governance-framework.finos.org/mitigations/mi-21_agent-decision-audit-and-explainability.html): Records verifiable by deployer, auditor or authority without privileged access to the provider; anchoring to a transparency log *(verified)*
 - DORA [Art. 30(3)(e)](https://www.digital-operational-resilience-act.com/Article_30.html): Unrestricted rights of access, inspection and audit (critical or important functions) *(verified)*
 - EU AI Act [Art. 13(3)(f)](https://artificialintelligenceact.eu/article/13/): Mechanisms that let deployers collect, store and interpret logs (high-risk) *(verified)*
+- AIUC-1 [E015.4](https://standard.aiuc-1.com/accountability/log-model-activity): Logs independently verifiable (supplemental); no verification method specified *(verified)*
+- CSA AARM [R5](https://arxiv.org/abs/2602.09433): Receipt signatures verifiable offline with published public keys *(verified)*
 
 ### TMP-03
 
@@ -433,6 +457,7 @@ Whether records can be changed after the fact without anyone noticing, and who c
 - CSA AICM IAM-12: Logging infrastructure read-only to those with other write access *(secondary source)*
 - CSA AICM IAM-04: Separation of duties *(title only)*
 - NYDFS 500 [500.7(c)](https://www.law.cornell.edu/regulations/new-york/23-NYCRR-500.7): Privileged access monitoring (Class A companies) *(verified)*
+- AIUC-1 [E015.3](https://standard.aiuc-1.com/accountability/log-model-activity): Log storage with access controls, retention and sanitation *(verified)*
 
 ## INC · Incident reconstruction
 
@@ -465,6 +490,9 @@ Detecting, reporting, stopping and reconstructing what went wrong.
 - CSA AICM SEF-09: Incident response *(title only)*
 - CSA AICM LOG-05 / LOG-06: Audit log monitoring and clock synchronization *(title only)*
 - NIST AI RMF MANAGE 4.3: Track and recover from incidents and errors *(verified)*
+- AIUC-1 [E015](https://standard.aiuc-1.com/accountability/log-model-activity): Logs must support incident investigation and explanation of behaviour *(verified)*
+- AIUC-1 [E001](https://standard.aiuc-1.com/accountability/ai-failure-plan-for-security-breaches): Breach plan covers evidence collection and preservation for legal review *(verified)*
+- CSA AARM [R5 / R6](https://arxiv.org/abs/2602.09433): Receipts with identity binding support forensic reconstruction of actions *(verified)*
 
 ### INC-02
 
@@ -495,6 +523,8 @@ Detecting, reporting, stopping and reconstructing what went wrong.
 - NIST AI 600-1 MG-4.3-002: Track errors and negative impacts *(verified)*
 - FINOS AIR [AIR-DET-001](https://air-governance-framework.finos.org/mitigations/mi-1_ai-data-leakage-prevention-and-detection.html): AI data leakage prevention and detection *(verified)*
 - FS-ISAC GenAI Levels 2-3: Vulnerability management, DLP and log management in deeper due diligence *(verified)*
+- AIUC-1 [E001](https://standard.aiuc-1.com/accountability/ai-failure-plan-for-security-breaches): Failure plan for AI privacy and security breaches with notification procedures *(verified)*
+- AIUC-1 [E002](https://standard.aiuc-1.com/accountability/ai-failure-plan-for-harmful-outputs): Failure plan for harmful outputs with customer communication protocols *(verified)*
 
 ### INC-03
 
@@ -552,6 +582,8 @@ How long records are kept, by whom, and how the buyer gets them.
 - FINOS AIR [AIR-DET-004](https://air-governance-framework.finos.org/mitigations/mi-4_ai-system-observability.html): Centralize AI logs, for example in a SIEM *(verified)*
 - NYDFS AI Letter Monitoring: Monitor user activity and AI tool use *(verified)*
 - SIG AI domain: Domain-level only; question text not reviewed *(title only)*
+- AIUC-1 [E015.3](https://standard.aiuc-1.com/accountability/log-model-activity): Log storage with defined retention periods, access controls and PII masking *(verified)*
+- CSA AARM [R8](https://arxiv.org/abs/2602.09433): Should stream telemetry to SIEM in a standard schema (OCSF, CEF) plus batch export *(verified)*
 
 ### RET-02
 
@@ -576,6 +608,7 @@ How long records are kept, by whom, and how the buyer gets them.
 - EU AI Act [Art. 19(1)-(2)](https://artificialintelligenceact.eu/article/19/): Provider keeps logs it controls at least six months *(verified)*
 - EU AI Act [Art. 12(1)](https://artificialintelligenceact.eu/article/12/): Automatic logging over the lifetime *(verified)*
 - NYDFS 500 [500.6(b)](https://www.law.cornell.edu/regulations/new-york/23-NYCRR-500.6): Covered entity keeps audit-trail records five years *(verified)*
+- CSA AARM [Sec. VI.D](https://arxiv.org/abs/2602.09433): Vendor-side integrations must let customers export or receive receipts for their audit trail *(verified)*
 
 ### RET-03
 
@@ -682,6 +715,8 @@ Which models run, how changes are controlled, and how behaviour is monitored ove
 - FINOS AIR [AIR-PREV-005](https://air-governance-framework.finos.org/mitigations/mi-5_system-acceptance-testing.html): System acceptance testing *(verified)*
 - FINOS AIR [AIR-PREV-025](https://air-governance-framework.finos.org/mitigations/mi-25_skill-plugin-integrity-and-governance.html): Skill and plugin integrity *(verified)*
 - NIST AI 600-1 MS-2.8-003: Version control across the lifecycle (content provenance) *(verified)*
+- AIUC-1 [E004](https://standard.aiuc-1.com/accountability/assign-accountability): Define changes needing approval (model, system prompt, guardrails); named approver and records *(verified)*
+- AIUC-1 [C002](https://standard.aiuc-1.com/safety/conduct-pre-deployment-testing): Pre-deployment testing of changes with risk assessment and approval sign-off *(verified)*
 
 ### CHG-03
 
@@ -733,6 +768,7 @@ Which models run, how changes are controlled, and how behaviour is monitored ove
 - DORA [Art. 30(3)(a)](https://www.digital-operational-resilience-act.com/Article_30.html): Precise service levels and reporting *(verified)*
 - NYDFS CL7 ¶29-¶30: Monitoring, drift testing and complaints *(verified)*
 - FINOS AIR [AIR-DET-011](https://air-governance-framework.finos.org/mitigations/mi-11_human-feedback-loop-for-ai-systems.html): Human feedback loop *(verified)*
+- AIUC-1 [C008](https://standard.aiuc-1.com/safety/monitor-ai-risk-categories): Ongoing monitoring of AI outputs across risk categories *(verified)*
 
 ## DAT · Data handling
 
@@ -763,6 +799,8 @@ Training use, retention and deletion of buyer data, including inside agent recor
 - DORA [Art. 30(2)(c)](https://www.digital-operational-resilience-act.com/Article_30.html): Contract provisions on data integrity and confidentiality *(verified)*
 - FINOS AIR [AIR-RC-001](https://air-governance-framework.finos.org/risks/ri-1_information-leaked-to-hosted-model.html): Risk: information leaked to hosted model *(verified)*
 - NIST AI 600-1 MG-4.1-006: Track dataset deletions and rectifications *(verified)*
+- AIUC-1 [A001](https://standard.aiuc-1.com/data-and-privacy/establish-data-use-policy): Input data policy on training use, retention and customer rights; enforced retention and deletion *(verified)*
+- AIUC-1 [A002](https://standard.aiuc-1.com/data-and-privacy/define-output-rights): Output ownership, opt-out and deletion policy *(verified)*
 
 ### DAT-02
 
@@ -789,6 +827,8 @@ Training use, retention and deletion of buyer data, including inside agent recor
 - FINOS AIR [AIR-DET-001](https://air-governance-framework.finos.org/mitigations/mi-1_ai-data-leakage-prevention-and-detection.html): Data leakage prevention and detection *(verified)*
 - CSA AICM DSP-12: Limitation of purpose *(title only)*
 - DORA [Art. 30(2)(c)](https://www.digital-operational-resilience-act.com/Article_30.html): Data confidentiality provisions *(verified)*
+- AIUC-1 [A006](https://standard.aiuc-1.com/data-and-privacy/prevent-pii-leakage): Prevent personal data leakage through outputs and logs *(verified)*
+- AIUC-1 [E015.3](https://standard.aiuc-1.com/accountability/log-model-activity): Data sanitation in log storage *(verified)*
 
 ## HUM · Human oversight (as the buyer defines it)
 
@@ -820,6 +860,11 @@ Evidence that the oversight model the buyer chose was actually followed.
 - FINOS AIR [AIR-PREV-024](https://air-governance-framework.finos.org/mitigations/mi-24_human-in-the-loop-action-approval-gate.html): Where a gate is used, a tamper-evident approval record bound to the action *(verified)*
 - CSA AICM GRC-15; IAM-04: Human supervision; separation of duties *(title only)*
 - ISO 42001 A.9.2: Processes for responsible use *(secondary source)*
+- AIUC-1 [D003.4](https://standard.aiuc-1.com/reliability/restrict-unsafe-tool-calls): Human approval for sensitive tool operations (core control since Oct 2026) *(verified)*
+- AIUC-1 [E015.2](https://standard.aiuc-1.com/accountability/log-model-activity): Approval records linked to execution: approver, timestamp, decision (supplemental) *(verified)*
+- AIUC-1 [C007](https://standard.aiuc-1.com/safety/flag-high-risk-recommendations): Flag high-risk outputs for human review *(verified)*
+- CSA AARM [R4](https://arxiv.org/abs/2602.09433): STEP_UP blocks the action until an approver decides; deny on timeout recommended *(verified)*
+- CSA AARM [R5](https://arxiv.org/abs/2602.09433): Receipt records approver identity, decision and timestamp *(verified)*
 
 ### HUM-02
 
@@ -842,6 +887,7 @@ Evidence that the oversight model the buyer chose was actually followed.
 - EU AI Act [Art. 14(4)(d)](https://artificialintelligenceact.eu/article/14/): Overseers can disregard, override or reverse output (high-risk) *(verified)*
 - CSA AICM IAM-18: Output modification and special authorization *(title only)*
 - FINOS AIR [AIR-DET-011](https://air-governance-framework.finos.org/mitigations/mi-11_human-feedback-loop-for-ai-systems.html): Human feedback loop *(verified)*
+- AIUC-1 [C009](https://standard.aiuc-1.com/safety/collect-real-time-feedback): Real-time user intervention; intervention logs reviewed (supplemental) *(verified)*
 
 ## SUB · Sub-processors
 
@@ -873,6 +919,8 @@ Model, voice and tool providers behind the agent, and the buyer's audit and regu
 - NIST AI RMF GOVERN 6.1; MAP 4.1: Third-party AI risk policies and component mapping *(verified)*
 - DORA [Art. 28(3); Art. 30(2)(b); RTS 2025/532](https://www.digital-operational-resilience-act.com/Article_28.html): Register, locations, subcontracting conditions *(secondary source)*
 - FINOS AIR [AIR-SEC-026](https://air-governance-framework.finos.org/risks/ri-26_mcp-server-supply-chain-compromise.html): Risk: MCP server supply chain compromise *(verified)*
+- AIUC-1 [E006](https://standard.aiuc-1.com/accountability/conduct-vendor-due-diligence): Due diligence on foundation and upstream model providers: data handling, PII, security *(verified)*
+- AIUC-1 [E011](https://standard.aiuc-1.com/accountability/record-processing-locations): Document AI data processing locations *(verified)*
 
 ### SUB-02
 

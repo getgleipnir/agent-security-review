@@ -6,7 +6,7 @@
 - Version used: As amended by the Digital Omnibus on AI, Regulation (EU) 2026/1744; Annex III high-risk obligations apply from 2027-12-02
 - Type: Binding law or regulation
 - Access: public
-- Checked: 2026-10-14
+- Checked: 2026-10-15
 
 | Control | What it covers | Checklist items | How we checked |
 |---|---|---|---|

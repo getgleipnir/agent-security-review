@@ -6,7 +6,7 @@
 - Version used: Adopted 2023-12-04
 - Type: Supervisory guidance
 - Access: public
-- Checked: 2026-10-14
+- Checked: 2026-10-15
 
 | Control | What it covers | Checklist items | How we checked |
 |---|---|---|---|

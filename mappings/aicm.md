@@ -6,7 +6,7 @@
 - Version used: v1.0.3 control titles; v1.1 (Jul 2026) has 247 controls and 320 AI-CAIQ questions
 - Type: Industry framework
 - Access: free with CSA login
-- Checked: 2026-10-14
+- Checked: 2026-10-15
 
 | Control | What it covers | Checklist items | How we checked |
 |---|---|---|---|

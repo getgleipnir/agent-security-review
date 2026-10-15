@@ -33,7 +33,7 @@ If you have good answers to these seven, the rest of the review usually goes fas
 
 **During the review**
 - When a question comes in, find the matching item (the `id` column) and answer with the evidence, then the policy. Reviewers trust a record more than a paragraph.
-- If the buyer cites a framework (FS-ISAC, NYDFS, NAIC, DORA, EU AI Act, AICM), use [mappings/](mappings/) to show which items you've covered for it.
+- If the buyer cites a framework (FS-ISAC, NYDFS, NAIC, DORA, EU AI Act, AICM, AIUC-1, CSA AARM), use [mappings/](mappings/) to show which items you've covered for it.
 - If you get a question that isn't here, note it and [add it](https://github.com/getgleipnir/agent-security-review/issues/new?template=add-question.yml).
 
 **After the review**
@@ -41,7 +41,7 @@ If you have good answers to these seven, the rest of the review usually goes fas
 
 ## How the mappings were built
 
-Each item's references were checked on 2026-10-14 against the source and marked:
+Each item's references were checked on 2026-10-14 against the source (AIUC-1 and CSA AARM references on 2026-10-15) and marked:
 
 - **verified**: checked against the primary text.
 - **secondary source**: the primary is gated or unreadable (for example ISO 42001 and CSA AICM), so it was checked against a reliable secondary source.
@@ -49,7 +49,7 @@ Each item's references were checked on 2026-10-14 against the source and marked:
 
 Paraphrases are ours and short. Read the source before relying on one. Some points worth knowing:
 
-- Only the **FINOS AI Governance Framework** (AIR-DET-021) explicitly asks for audit records that are tamper-evident *and* verifiable by the deployer, auditor or regulator without privileged access to the provider. DORA's RTS (2024/1774, Art. 12) requires logs to be protected against tampering and deletion; NYDFS Part 500, NAIC, the EU AI Act and ISO 42001 require records to exist, be retained and support reconstruction, without naming a mechanism.
+- Three frameworks explicitly ask for audit records that are tamper-evident *and* independently verifiable: the **FINOS AI Governance Framework** (AIR-DET-021, verifiable by the deployer, auditor or regulator without privileged access to the provider), **AIUC-1** (E015.4, a supplemental "may include" control under the mandatory logging requirement E015) and the **CSA AARM** specification (R5: cryptographically signed receipts for every action, covering action, context, identity, decision and outcome, verifiable offline). DORA's RTS (2024/1774, Art. 12) requires logs to be protected against tampering and deletion; NYDFS Part 500, NAIC, the EU AI Act and ISO 42001 require records to exist, be retained and support reconstruction, without naming a mechanism.
 - EU AI Act high-risk obligations for Annex III use cases, including credit scoring and life and health insurance pricing, apply from **2 December 2027** after the Digital Omnibus on AI (Regulation (EU) 2026/1744, published 24 July 2026, in force 27 July 2026).
 - The FS-ISAC question workbook, SIG question text and the AI-CAIQ question text are licensed or login-gated, so this checklist maps to their published categories and control IDs, not to their exact question wording.
 

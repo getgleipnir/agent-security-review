@@ -6,7 +6,7 @@
 - Version used: Live site incl. v2.0 agentic additions (accessed 2026-10-14)
 - Type: Industry framework
 - Access: public
-- Checked: 2026-10-14
+- Checked: 2026-10-15
 
 | Control | What it covers | Checklist items | How we checked |
 |---|---|---|---|

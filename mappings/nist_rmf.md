@@ -6,7 +6,7 @@
 - Version used: January 2023
 - Type: Voluntary government framework
 - Access: public
-- Checked: 2026-10-14
+- Checked: 2026-10-15
 
 | Control | What it covers | Checklist items | How we checked |
 |---|---|---|---|
